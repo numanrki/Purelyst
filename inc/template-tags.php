@@ -340,30 +340,34 @@ function purelyst_post_navigation() {
         return;
     }
 
-    echo '<nav class="post-navigation" style="max-width: 720px; margin: 2rem auto; padding: 0 1.5rem; display: flex; justify-content: space-between; gap: 2rem;">';
+    echo '<nav class="post-navigation">';
     
     if ( $prev_post ) {
         printf(
-            '<a href="%s" class="post-nav-link post-nav-prev" style="flex: 1; text-decoration: none;">
-                <span class="post-nav-label" style="font-size: 0.75rem; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">%s</span>
-                <span class="post-nav-title" style="display: block; font-size: 1rem; font-weight: 600; color: var(--color-text-primary); margin-top: 0.25rem;">%s</span>
+            '<a href="%s" class="post-nav-link post-nav-prev">
+                <span class="post-nav-label">%s</span>
+                <span class="post-nav-title">%s</span>
             </a>',
             esc_url( get_permalink( $prev_post ) ),
             esc_html__( 'Previous', 'purelyst' ),
             esc_html( get_the_title( $prev_post ) )
         );
+    } else {
+        echo '<span class="post-nav-placeholder"></span>';
     }
     
     if ( $next_post ) {
         printf(
-            '<a href="%s" class="post-nav-link post-nav-next" style="flex: 1; text-align: right; text-decoration: none;">
-                <span class="post-nav-label" style="font-size: 0.75rem; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">%s</span>
-                <span class="post-nav-title" style="display: block; font-size: 1rem; font-weight: 600; color: var(--color-text-primary); margin-top: 0.25rem;">%s</span>
+            '<a href="%s" class="post-nav-link post-nav-next">
+                <span class="post-nav-label">%s</span>
+                <span class="post-nav-title">%s</span>
             </a>',
             esc_url( get_permalink( $next_post ) ),
             esc_html__( 'Next', 'purelyst' ),
             esc_html( get_the_title( $next_post ) )
         );
+    } else {
+        echo '<span class="post-nav-placeholder"></span>';
     }
     
     echo '</nav>';

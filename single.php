@@ -21,8 +21,9 @@ get_header();
     <div class="single-content-wrapper">
         <div class="single-content-layout">
             <!-- Article Column -->
-            <?php while ( have_posts() ) : the_post(); ?>
-                <article id="post-<?php the_ID(); ?>" <?php post_class( 'single-article' ); ?>>
+            <div class="single-main-column">
+                <?php while ( have_posts() ) : the_post(); ?>
+                    <article id="post-<?php the_ID(); ?>" <?php post_class( 'single-article' ); ?>>
                     
                     <!-- Article Header Card -->
                     <div class="article-header-card">
@@ -135,7 +136,8 @@ get_header();
                     comments_template();
                 }
                 ?>
-            <?php endwhile; ?>
+                <?php endwhile; ?>
+            </div>
 
             <!-- Sidebar -->
             <?php get_sidebar( 'single' ); ?>

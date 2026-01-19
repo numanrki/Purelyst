@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.7
+Version: 1.0.8
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -1770,9 +1770,18 @@ input[type="search"].search-bar-input {
 
 @media (min-width: 1024px) {
     .single-content-layout {
-        grid-template-columns: 2fr 1fr;
-        gap: 2.5rem;
+        grid-template-columns: 1fr 340px;
+        gap: 3rem;
+        align-items: start;
     }
+}
+
+/* Single Main Column - contains article, navigation, comments */
+.single-main-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    min-width: 0;
 }
 
 /* Single Article */
@@ -2145,6 +2154,273 @@ input[type="search"].search-bar-input {
 .dark .article-tag:hover {
     background-color: var(--color-border-dark);
     color: #ffffff;
+}
+
+/* ==========================================================================
+   Post Navigation
+   ========================================================================== */
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: var(--spacing-xl);
+    background-color: var(--color-surface-light);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+}
+
+.dark .post-navigation {
+    background-color: var(--color-surface-dark);
+}
+
+.post-nav-link {
+    flex: 1;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.post-nav-link:hover {
+    opacity: 0.8;
+}
+
+.post-nav-prev {
+    text-align: left;
+}
+
+.post-nav-next {
+    text-align: right;
+}
+
+.post-nav-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.375rem;
+}
+
+.post-nav-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+
+.dark .post-nav-title {
+    color: #ffffff;
+}
+
+.post-nav-placeholder {
+    flex: 1;
+}
+
+/* ==========================================================================
+   Comments Section
+   ========================================================================== */
+.comments-area {
+    background-color: var(--color-surface-light);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+}
+
+.dark .comments-area {
+    background-color: var(--color-surface-dark);
+}
+
+.comments-title,
+.comment-reply-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-lg) 0;
+    letter-spacing: -0.025em;
+}
+
+.dark .comments-title,
+.dark .comment-reply-title {
+    color: #ffffff;
+}
+
+/* Comment List */
+.comment-list {
+    list-style: none;
+    margin: 0 0 var(--spacing-xl) 0;
+    padding: 0;
+}
+
+.comment-list .comment {
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.dark .comment-list .comment {
+    border-color: var(--color-border-dark);
+}
+
+.comment-list .comment:last-child {
+    border-bottom: none;
+}
+
+.comment-body {
+    display: flex;
+    gap: 1rem;
+}
+
+.comment-author .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-author .fn {
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.dark .comment-author .fn {
+    color: #ffffff;
+}
+
+.comment-metadata {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.comment-metadata a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+}
+
+.comment-content p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+}
+
+.reply a {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.reply a:hover {
+    text-decoration: underline;
+}
+
+/* Comment Form */
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.logged-in-as {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 0.5rem 0;
+}
+
+.logged-in-as a {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.logged-in-as a:hover {
+    color: var(--color-accent);
+}
+
+.dark .logged-in-as a {
+    color: #ffffff;
+}
+
+.comment-form-comment label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.dark .comment-form-comment label {
+    color: #ffffff;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    background-color: var(--color-background-light);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(43, 64, 62, 0.1);
+}
+
+.dark .comment-form textarea {
+    background-color: var(--color-background-dark);
+    border-color: var(--color-border-dark);
+    color: #ffffff;
+}
+
+.dark .comment-form textarea:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(181, 167, 149, 0.1);
+}
+
+.comment-form .form-submit {
+    margin: 0;
+}
+
+.comment-form .submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 2rem;
+    font-family: var(--font-family);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.comment-form .submit:hover {
+    background-color: rgba(43, 64, 62, 0.9);
+    transform: translateY(-1px);
+}
+
+.dark .comment-form .submit {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+.no-comments {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
 }
 
 /* ==========================================================================
