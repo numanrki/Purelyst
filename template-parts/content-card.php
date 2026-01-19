@@ -19,7 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
             ?>
             <div class="article-thumbnail-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
         <?php else : ?>
-            <div class="article-thumbnail-inner" style="background-color: #e5e7eb;"></div>
+            <div class="article-thumbnail-inner article-thumbnail-placeholder">
+                <span class="material-icons">image</span>
+            </div>
         <?php endif; ?>
     </a>
 

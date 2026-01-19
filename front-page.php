@@ -81,6 +81,10 @@ if ( $hero_post_id ) {
                                 ?>
                                 <div class="hero-image-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
                             </div>
+                        <?php else : ?>
+                            <div class="hero-image-placeholder">
+                                <span class="material-symbols-outlined" aria-hidden="true">image</span>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>

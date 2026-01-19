@@ -352,8 +352,9 @@ img {
 .hero-section {
     position: relative;
     width: 100%;
-    padding: 3rem 1.5rem 4rem;
+    padding: 4rem 1.5rem 5rem;
     background-color: var(--color-background-light);
+    overflow: hidden;
 }
 
 .dark .hero-section {
@@ -366,20 +367,20 @@ img {
 }
 
 .hero-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
     align-items: center;
 }
 
 @media (min-width: 1024px) {
     .hero-content {
-        flex-direction: row;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
     }
 }
 
 .hero-text {
-    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -389,6 +390,7 @@ img {
 @media (min-width: 1024px) {
     .hero-text {
         order: 1;
+        padding-right: 2rem;
     }
 }
 
@@ -396,35 +398,43 @@ img {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.25rem 0.75rem;
+    padding: 0.375rem 1rem;
     border-radius: var(--radius-full);
-    background-color: rgba(181, 167, 149, 0.1);
+    background-color: rgba(181, 167, 149, 0.15);
     color: var(--color-accent);
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    width: fit-content;
 }
 
 .featured-badge-dot {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.375rem;
+    height: 0.375rem;
     border-radius: var(--radius-full);
     background-color: var(--color-accent);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 .hero-title {
-    font-size: 2.25rem;
-    font-weight: 900;
+    font-size: 2.5rem;
+    font-weight: 800;
     color: var(--color-text-primary);
     line-height: 1.1;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
     margin: 0;
 }
 
 .hero-title a {
     color: inherit;
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .hero-title a:hover {
@@ -437,13 +447,13 @@ img {
 
 @media (min-width: 768px) {
     .hero-title {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
 }
 
 @media (min-width: 1024px) {
     .hero-title {
-        font-size: 3.75rem;
+        font-size: 4rem;
     }
 }
 
@@ -454,9 +464,15 @@ img {
 .hero-excerpt {
     font-size: 1.125rem;
     color: var(--color-text-secondary);
-    line-height: 1.75;
-    max-width: 36rem;
+    line-height: 1.8;
+    max-width: 32rem;
     margin: 0;
+}
+
+@media (min-width: 768px) {
+    .hero-excerpt {
+        font-size: 1.25rem;
+    }
 }
 
 .dark .hero-excerpt {
@@ -464,32 +480,42 @@ img {
 }
 
 .hero-cta {
-    padding-top: 0.5rem;
+    padding-top: 0.75rem;
 }
 
 .btn-primary {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.875rem 1.5rem;
+    padding: 1rem 1.75rem;
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     background-color: var(--color-primary);
     color: #ffffff;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 4px 14px rgba(43, 64, 62, 0.25);
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .btn-primary:hover {
-    box-shadow: var(--shadow-hover);
+    background-color: #1f2e2d;
+    box-shadow: 0 6px 20px rgba(43, 64, 62, 0.35);
     transform: translateY(-2px);
 }
 
+.btn-primary .material-symbols-outlined {
+    font-size: 1.125rem;
+    transition: transform 0.2s ease;
+}
+
+.btn-primary:hover .material-symbols-outlined {
+    transform: translateX(4px);
+}
+
 .hero-image {
-    flex: 1;
     width: 100%;
     order: 1;
 }
@@ -501,23 +527,66 @@ img {
 }
 
 .hero-image-wrapper {
+    position: relative;
     overflow: hidden;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #e8e4df 0%, #d4cfc7 50%, #c9c4bb 100%);
+    aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+    .hero-image-wrapper {
+        aspect-ratio: 16 / 10;
+    }
 }
 
 .hero-image-inner {
-    aspect-ratio: 16 / 9;
+    position: absolute;
+    inset: 0;
     width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
-    filter: saturate(0.85);
-    transition: filter 0.3s ease, transform 0.5s ease;
+    transition: transform 0.7s ease;
 }
 
 .hero-image-wrapper:hover .hero-image-inner {
-    filter: saturate(1);
-    transform: scale(1.02);
+    transform: scale(1.03);
+}
+
+/* Hero placeholder when no image */
+.hero-image-placeholder {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #e8e4df 0%, #d4cfc7 50%, #c9c4bb 100%);
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .hero-image-placeholder {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+.hero-image-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(181, 167, 149, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(43, 64, 62, 0.1) 0%, transparent 50%);
+}
+
+.hero-image-placeholder .material-symbols-outlined {
+    font-size: 4rem;
+    color: rgba(43, 64, 62, 0.15);
+}
 }
 
 /* ==========================================================================
@@ -636,6 +705,27 @@ img {
 .article-card:hover .article-thumbnail-inner {
     filter: saturate(1);
     transform: scale(1.02);
+}
+
+.article-thumbnail-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+.article-thumbnail-placeholder .material-icons {
+    font-size: 3rem;
+    color: #9ca3af;
+    opacity: 0.6;
+}
+
+.dark .article-thumbnail-placeholder {
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+}
+
+.dark .article-thumbnail-placeholder .material-icons {
+    color: #6b7280;
 }
 
 .article-content {
