@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="article-thumbnail-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
         <?php else : ?>
             <div class="article-thumbnail-inner article-thumbnail-placeholder">
-                <span class="material-icons">image</span>
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ); ?>" alt="" class="placeholder-svg">
             </div>
         <?php endif; ?>
     </a>

@@ -83,7 +83,7 @@ if ( $hero_post_id ) {
                             </div>
                         <?php else : ?>
                             <div class="hero-image-placeholder">
-                                <span class="material-symbols-outlined" aria-hidden="true">image</span>
+                                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ); ?>" alt="" class="placeholder-svg">
                             </div>
                         <?php endif; ?>
                     </div>
