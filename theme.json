@@ -1,0 +1,135 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 3,
+    "settings": {
+        "appearanceTools": true,
+        "color": {
+            "palette": [
+                {
+                    "slug": "primary",
+                    "color": "#2b403e",
+                    "name": "Primary"
+                },
+                {
+                    "slug": "accent",
+                    "color": "#B5A795",
+                    "name": "Accent"
+                },
+                {
+                    "slug": "background-light",
+                    "color": "#f9fafb",
+                    "name": "Background Light"
+                },
+                {
+                    "slug": "background-dark",
+                    "color": "#1a1e23",
+                    "name": "Background Dark"
+                },
+                {
+                    "slug": "surface-light",
+                    "color": "#ffffff",
+                    "name": "Surface Light"
+                },
+                {
+                    "slug": "surface-dark",
+                    "color": "#242a30",
+                    "name": "Surface Dark"
+                },
+                {
+                    "slug": "text-primary",
+                    "color": "#131616",
+                    "name": "Text Primary"
+                },
+                {
+                    "slug": "text-secondary",
+                    "color": "#6a7c7a",
+                    "name": "Text Secondary"
+                }
+            ]
+        },
+        "typography": {
+            "fontFamilies": [
+                {
+                    "fontFamily": "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    "slug": "display",
+                    "name": "Display"
+                }
+            ],
+            "fontSizes": [
+                {
+                    "slug": "small",
+                    "size": "0.875rem",
+                    "name": "Small"
+                },
+                {
+                    "slug": "medium",
+                    "size": "1rem",
+                    "name": "Medium"
+                },
+                {
+                    "slug": "large",
+                    "size": "1.125rem",
+                    "name": "Large"
+                },
+                {
+                    "slug": "x-large",
+                    "size": "1.5rem",
+                    "name": "Extra Large"
+                },
+                {
+                    "slug": "xx-large",
+                    "size": "2.5rem",
+                    "name": "Huge"
+                }
+            ]
+        },
+        "spacing": {
+            "units": ["px", "em", "rem", "%", "vw", "vh"]
+        },
+        "layout": {
+            "contentSize": "720px",
+            "wideSize": "1280px"
+        }
+    },
+    "styles": {
+        "color": {
+            "background": "var(--wp--preset--color--background-light)",
+            "text": "var(--wp--preset--color--text-primary)"
+        },
+        "typography": {
+            "fontFamily": "var(--wp--preset--font-family--display)",
+            "lineHeight": "1.6"
+        },
+        "spacing": {
+            "blockGap": "1.5rem"
+        },
+        "elements": {
+            "link": {
+                "color": {
+                    "text": "var(--wp--preset--color--primary)"
+                }
+            },
+            "h1": {
+                "typography": {
+                    "fontSize": "2.5rem",
+                    "fontWeight": "900",
+                    "lineHeight": "1.2"
+                }
+            },
+            "h2": {
+                "typography": {
+                    "fontSize": "1.75rem",
+                    "fontWeight": "700",
+                    "lineHeight": "1.3"
+                }
+            },
+            "h3": {
+                "typography": {
+                    "fontSize": "1.375rem",
+                    "fontWeight": "700",
+                    "lineHeight": "1.4"
+                }
+            }
+        }
+    }
+}
