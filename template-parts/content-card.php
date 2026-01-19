@@ -11,32 +11,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'article-card' ); ?>>
-    <?php if ( has_post_thumbnail() ) : ?>
-        <a href="<?php the_permalink(); ?>" class="article-image-link">
+    <a href="<?php the_permalink(); ?>" class="article-thumbnail">
+        <?php if ( has_post_thumbnail() ) : ?>
             <?php
             $thumbnail_id = get_post_thumbnail_id();
-            $image_data = wp_get_attachment_image_src( $thumbnail_id, 'purelyst-card' );
-            
-            if ( $image_data ) {
-                $alt_text = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
-                if ( empty( $alt_text ) ) {
-                    $alt_text = get_the_title();
-                }
-                
-                printf(
-                    '<img src="%s" alt="%s" width="%d" height="%d" class="article-image" loading="lazy" decoding="async">',
-                    esc_url( $image_data[0] ),
-                    esc_attr( $alt_text ),
-                    esc_attr( $image_data[1] ),
-                    esc_attr( $image_data[2] )
-                );
-            }
+            $image_url = get_the_post_thumbnail_url( get_the_ID(), 'purelyst-card' );
             ?>
-        </a>
-    <?php endif; ?>
+            <div class="article-thumbnail-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
+        <?php else : ?>
+            <div class="article-thumbnail-inner" style="background-color: #e5e7eb;"></div>
+        <?php endif; ?>
+    </a>
 
     <div class="article-content">
-        <?php purelyst_post_categories(); ?>
+        <span class="article-category">
+            <?php
+            $categories = get_the_category();
+            if ( ! empty( $categories ) ) {
+                echo esc_html( $categories[0]->name );
+            }
+            ?>
+        </span>
 
         <h3 class="article-title">
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
@@ -46,6 +41,10 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php echo esc_html( wp_trim_words( get_the_excerpt(), 20 ) ); ?>
         </p>
 
-        <?php purelyst_post_meta(); ?>
+        <div class="article-meta">
+            <span class="meta-date"><?php echo esc_html( get_the_date( 'M j, Y' ) ); ?></span>
+            <span class="meta-separator">•</span>
+            <span class="meta-reading-time"><?php echo esc_html( purelyst_reading_time() ); ?></span>
+        </div>
     </div>
 </article>

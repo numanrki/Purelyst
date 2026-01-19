@@ -43,54 +43,46 @@ if ( $hero_post_id ) {
         <section class="hero-section">
             <div class="hero-inner">
                 <div class="hero-content">
-                    <span class="hero-badge">
-                        <?php echo esc_html( get_theme_mod( 'purelyst_hero_badge', __( 'Featured Story', 'purelyst' ) ) ); ?>
-                    </span>
-                    
-                    <h1 class="hero-title">
-                        <a href="<?php the_permalink(); ?>">
-                            <?php the_title(); ?>
-                        </a>
-                    </h1>
-                    
-                    <?php if ( has_excerpt() ) : ?>
-                        <p class="hero-excerpt">
-                            <?php echo esc_html( get_the_excerpt() ); ?>
-                        </p>
-                    <?php else : ?>
-                        <p class="hero-excerpt">
-                            <?php echo esc_html( wp_trim_words( get_the_content(), 30 ) ); ?>
-                        </p>
-                    <?php endif; ?>
-                    
-                    <a href="<?php the_permalink(); ?>" class="hero-btn">
-                        <?php echo esc_html( get_theme_mod( 'purelyst_hero_button_text', __( 'Read Article', 'purelyst' ) ) ); ?>
-                        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-                    </a>
-                </div>
-                
-                <div class="hero-image">
-                    <?php
-                    if ( has_post_thumbnail() ) {
-                        $thumbnail_id = get_post_thumbnail_id();
-                        $image_data = wp_get_attachment_image_src( $thumbnail_id, 'purelyst-hero' );
+                    <div class="hero-text">
+                        <span class="featured-badge">
+                            <span class="featured-badge-dot"></span>
+                            <?php echo esc_html( get_theme_mod( 'purelyst_hero_badge', __( 'Featured Story', 'purelyst' ) ) ); ?>
+                        </span>
                         
-                        if ( $image_data ) {
-                            $alt_text = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
-                            if ( empty( $alt_text ) ) {
-                                $alt_text = get_the_title();
+                        <h1 class="hero-title">
+                            <a href="<?php the_permalink(); ?>">
+                                <?php the_title(); ?>
+                            </a>
+                        </h1>
+                        
+                        <p class="hero-excerpt">
+                            <?php 
+                            if ( has_excerpt() ) {
+                                echo esc_html( get_the_excerpt() );
+                            } else {
+                                echo esc_html( wp_trim_words( get_the_content(), 30 ) );
                             }
-                            
-                            printf(
-                                '<img src="%s" alt="%s" width="%d" height="%d" class="hero-image-inner" loading="eager" fetchpriority="high" decoding="async">',
-                                esc_url( $image_data[0] ),
-                                esc_attr( $alt_text ),
-                                esc_attr( $image_data[1] ),
-                                esc_attr( $image_data[2] )
-                            );
-                        }
-                    }
-                    ?>
+                            ?>
+                        </p>
+                        
+                        <div class="hero-cta">
+                            <a href="<?php the_permalink(); ?>" class="btn-primary">
+                                <?php echo esc_html( get_theme_mod( 'purelyst_hero_button_text', __( 'Read Article', 'purelyst' ) ) ); ?>
+                                <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-image">
+                        <?php if ( has_post_thumbnail() ) : ?>
+                            <div class="hero-image-wrapper">
+                                <?php 
+                                $image_url = get_the_post_thumbnail_url( get_the_ID(), 'purelyst-hero' );
+                                ?>
+                                <div class="hero-image-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </section>
@@ -101,57 +93,55 @@ if ( $hero_post_id ) {
     ?>
 
     <!-- Recent Stories Section -->
-    <div class="content-wrapper">
-        <div class="content-layout">
-            <div class="content-main">
-                <!-- Section Header -->
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <?php echo esc_html( get_theme_mod( 'purelyst_recent_posts_title', __( 'Recent Stories', 'purelyst' ) ) ); ?>
-                    </h2>
-                    <a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ); ?>" class="section-link">
-                        <?php esc_html_e( 'View All', 'purelyst' ); ?>
-                        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-                    </a>
-                </div>
-
-                <?php
-                // Query for recent posts excluding the hero post
-                $recent_posts = new WP_Query( array(
-                    'posts_per_page' => 6,
-                    'post__not_in'   => isset( $hero_post_id_exclude ) ? array( $hero_post_id_exclude ) : array(),
-                    'ignore_sticky_posts' => 1,
-                ) );
-
-                if ( $recent_posts->have_posts() ) :
-                ?>
-                    <div class="articles-grid" id="articles-grid">
-                        <?php
-                        while ( $recent_posts->have_posts() ) :
-                            $recent_posts->the_post();
-                            get_template_part( 'template-parts/content', 'card' );
-                        endwhile;
-                        ?>
-                    </div>
-
-                    <?php if ( $recent_posts->max_num_pages > 1 ) : ?>
-                        <div class="load-more-wrapper">
-                            <button class="load-more-btn" data-page="1" data-max-pages="<?php echo esc_attr( $recent_posts->max_num_pages ); ?>">
-                                <?php echo esc_html( get_theme_mod( 'purelyst_load_more_text', __( 'Load More Stories', 'purelyst' ) ) ); ?>
-                                <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
-                            </button>
-                        </div>
-                    <?php endif; ?>
-                <?php 
-                wp_reset_postdata();
-                else : 
-                ?>
-                    <p><?php esc_html_e( 'No posts found.', 'purelyst' ); ?></p>
-                <?php endif; ?>
+    <div class="main-content">
+        <div class="content-area">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 class="section-title">
+                    <?php echo esc_html( get_theme_mod( 'purelyst_recent_posts_title', __( 'Recent Stories', 'purelyst' ) ) ); ?>
+                </h2>
+                <a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ); ?>" class="view-all-link">
+                    <?php esc_html_e( 'View All', 'purelyst' ); ?>
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                </a>
             </div>
 
-            <?php get_sidebar(); ?>
+            <?php
+            // Query for recent posts excluding the hero post
+            $recent_posts = new WP_Query( array(
+                'posts_per_page' => 6,
+                'post__not_in'   => isset( $hero_post_id_exclude ) ? array( $hero_post_id_exclude ) : array(),
+                'ignore_sticky_posts' => 1,
+            ) );
+
+            if ( $recent_posts->have_posts() ) :
+            ?>
+                <div class="articles-grid" id="articles-grid">
+                    <?php
+                    while ( $recent_posts->have_posts() ) :
+                        $recent_posts->the_post();
+                        get_template_part( 'template-parts/content', 'card' );
+                    endwhile;
+                    ?>
+                </div>
+
+                <?php if ( $recent_posts->max_num_pages > 1 ) : ?>
+                    <div class="load-more-wrapper">
+                        <button class="load-more-btn" data-page="1" data-max-pages="<?php echo esc_attr( $recent_posts->max_num_pages ); ?>">
+                            <?php echo esc_html( get_theme_mod( 'purelyst_load_more_text', __( 'Load More Stories', 'purelyst' ) ) ); ?>
+                            <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+            <?php 
+            wp_reset_postdata();
+            else : 
+            ?>
+                <p><?php esc_html_e( 'No posts found.', 'purelyst' ); ?></p>
+            <?php endif; ?>
         </div>
+
+        <?php get_sidebar(); ?>
     </div>
 </main>
 
