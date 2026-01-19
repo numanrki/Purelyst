@@ -39,6 +39,84 @@
 
             // Update preview on input change
             $(document).on('change input', '#purelyst-settings-form input, #purelyst-settings-form select', this.updatePreview);
+
+            // Media uploads
+            $(document).on('click', '#upload-logo-btn', this.handleLogoUpload);
+            $(document).on('click', '#remove-logo-btn', this.handleLogoRemove);
+            $(document).on('click', '#upload-favicon-btn', this.handleFaviconUpload);
+            $(document).on('click', '#remove-favicon-btn', this.handleFaviconRemove);
+        },
+
+        /**
+         * Handle Logo Upload
+         */
+        handleLogoUpload: function(e) {
+            e.preventDefault();
+            
+            const frame = wp.media({
+                title: 'Select or Upload Logo',
+                button: { text: 'Use as Logo' },
+                multiple: false
+            });
+
+            frame.on('select', function() {
+                const attachment = frame.state().get('selection').first().toJSON();
+                $('#site_logo').val(attachment.id);
+                $('#logo-preview')
+                    .addClass('has-image')
+                    .html('<img src="' + attachment.url + '" alt="">');
+                $('#remove-logo-btn').show();
+            });
+
+            frame.open();
+        },
+
+        /**
+         * Handle Logo Remove
+         */
+        handleLogoRemove: function(e) {
+            e.preventDefault();
+            $('#site_logo').val('');
+            $('#logo-preview')
+                .removeClass('has-image')
+                .html('<span class="material-symbols-outlined">add_photo_alternate</span><span class="purelyst-media-text">Upload Logo</span>');
+            $('#remove-logo-btn').hide();
+        },
+
+        /**
+         * Handle Favicon Upload
+         */
+        handleFaviconUpload: function(e) {
+            e.preventDefault();
+            
+            const frame = wp.media({
+                title: 'Select or Upload Favicon',
+                button: { text: 'Use as Favicon' },
+                multiple: false
+            });
+
+            frame.on('select', function() {
+                const attachment = frame.state().get('selection').first().toJSON();
+                $('#site_favicon').val(attachment.id);
+                $('#favicon-preview')
+                    .addClass('has-image')
+                    .html('<img src="' + attachment.url + '" alt="">');
+                $('#remove-favicon-btn').show();
+            });
+
+            frame.open();
+        },
+
+        /**
+         * Handle Favicon Remove
+         */
+        handleFaviconRemove: function(e) {
+            e.preventDefault();
+            $('#site_favicon').val('');
+            $('#favicon-preview')
+                .removeClass('has-image')
+                .html('<span class="material-symbols-outlined">add_photo_alternate</span>');
+            $('#remove-favicon-btn').hide();
         },
 
         /**
@@ -216,6 +294,16 @@
                 const name = $input.attr('name');
                 
                 if (name && !$input.hasClass('wp-color-picker')) {
+                    settings[name] = $input.val();
+                }
+            });
+
+            // Hidden inputs (for logo and favicon)
+            $form.find('input[type="hidden"]').each(function() {
+                const $input = $(this);
+                const name = $input.attr('name');
+                
+                if (name) {
                     settings[name] = $input.val();
                 }
             });

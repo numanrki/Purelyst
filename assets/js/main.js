@@ -42,18 +42,57 @@
     };
 
     /**
-     * Search Toggle
+     * Search Toggle - Slide down search bar
      */
     const initSearchToggle = () => {
         const searchToggle = document.querySelector('[data-search-toggle]');
+        const searchBar = document.getElementById('search-bar');
+        const searchInput = document.getElementById('header-search-input');
 
-        if (!searchToggle) return;
+        if (!searchToggle || !searchBar) return;
 
         searchToggle.addEventListener('click', () => {
-            // Simple search functionality - can be extended
-            const searchQuery = prompt('Search for:');
-            if (searchQuery && searchQuery.trim()) {
-                window.location.href = `${window.location.origin}/?s=${encodeURIComponent(searchQuery.trim())}`;
+            const isOpen = searchBar.classList.contains('is-open');
+            
+            if (isOpen) {
+                // Close search bar
+                searchBar.classList.remove('is-open');
+                searchBar.setAttribute('aria-hidden', 'true');
+                searchToggle.classList.remove('is-active');
+                searchToggle.setAttribute('aria-expanded', 'false');
+            } else {
+                // Open search bar
+                searchBar.classList.add('is-open');
+                searchBar.setAttribute('aria-hidden', 'false');
+                searchToggle.classList.add('is-active');
+                searchToggle.setAttribute('aria-expanded', 'true');
+                
+                // Focus input after animation
+                setTimeout(() => {
+                    if (searchInput) searchInput.focus();
+                }, 300);
+            }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchBar.classList.contains('is-open')) {
+                searchBar.classList.remove('is-open');
+                searchBar.setAttribute('aria-hidden', 'true');
+                searchToggle.classList.remove('is-active');
+                searchToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (searchBar.classList.contains('is-open') && 
+                !searchBar.contains(e.target) && 
+                !searchToggle.contains(e.target)) {
+                searchBar.classList.remove('is-open');
+                searchBar.setAttribute('aria-hidden', 'true');
+                searchToggle.classList.remove('is-active');
+                searchToggle.setAttribute('aria-expanded', 'false');
             }
         });
     };

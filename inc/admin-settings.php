@@ -121,11 +121,14 @@ class Purelyst_Admin_Settings {
         // WordPress color picker
         wp_enqueue_style( 'wp-color-picker' );
 
+        // WordPress media uploader
+        wp_enqueue_media();
+
         // Admin JS
         wp_enqueue_script(
             'purelyst-admin-script',
             get_template_directory_uri() . '/assets/js/admin.js',
-            array( 'jquery', 'wp-color-picker' ),
+            array( 'jquery', 'wp-color-picker', 'media-upload' ),
             PURELYST_VERSION,
             true
         );
@@ -164,6 +167,24 @@ class Purelyst_Admin_Settings {
         // Sanitize and save each setting
         if ( isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ) {
             foreach ( $_POST['settings'] as $key => $value ) {
+                // Handle site logo separately
+                if ( $key === 'site_logo' ) {
+                    $logo_id = absint( $value );
+                    if ( $logo_id ) {
+                        set_theme_mod( 'custom_logo', $logo_id );
+                    } else {
+                        remove_theme_mod( 'custom_logo' );
+                    }
+                    continue;
+                }
+                
+                // Handle site favicon separately
+                if ( $key === 'site_favicon' ) {
+                    $favicon_id = absint( $value );
+                    update_option( 'site_icon', $favicon_id );
+                    continue;
+                }
+                
                 $settings[ sanitize_key( $key ) ] = $this->sanitize_setting( $key, $value );
             }
         }
@@ -341,6 +362,74 @@ class Purelyst_Admin_Settings {
                                             </h2>
 
                                             <div class="purelyst-settings-group">
+                                                <!-- Site Identity Section -->
+                                                <div class="purelyst-config-box">
+                                                    <h3 class="purelyst-config-title"><?php esc_html_e( 'SITE IDENTITY', 'purelyst' ); ?></h3>
+                                                    
+                                                    <!-- Site Logo -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Site Logo', 'purelyst' ); ?></label>
+                                                        <div class="purelyst-media-upload">
+                                                            <?php 
+                                                            $site_logo = get_theme_mod( 'custom_logo' );
+                                                            $logo_url = $site_logo ? wp_get_attachment_image_url( $site_logo, 'medium' ) : '';
+                                                            ?>
+                                                            <div class="purelyst-media-preview <?php echo $logo_url ? 'has-image' : ''; ?>" id="logo-preview">
+                                                                <?php if ( $logo_url ) : ?>
+                                                                    <img src="<?php echo esc_url( $logo_url ); ?>" alt="">
+                                                                <?php else : ?>
+                                                                    <span class="material-symbols-outlined">add_photo_alternate</span>
+                                                                    <span class="purelyst-media-text"><?php esc_html_e( 'Upload Logo', 'purelyst' ); ?></span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                            <input type="hidden" name="site_logo" id="site_logo" value="<?php echo esc_attr( $site_logo ); ?>">
+                                                            <div class="purelyst-media-actions">
+                                                                <button type="button" class="purelyst-btn purelyst-btn-sm purelyst-btn-secondary" id="upload-logo-btn">
+                                                                    <span class="material-symbols-outlined">upload</span>
+                                                                    <?php esc_html_e( 'Upload', 'purelyst' ); ?>
+                                                                </button>
+                                                                <button type="button" class="purelyst-btn purelyst-btn-sm purelyst-btn-outline" id="remove-logo-btn" <?php echo ! $logo_url ? 'style="display:none;"' : ''; ?>>
+                                                                    <span class="material-symbols-outlined">delete</span>
+                                                                    <?php esc_html_e( 'Remove', 'purelyst' ); ?>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <p class="purelyst-field-desc"><?php esc_html_e( 'Recommended size: 200x64 pixels. PNG or SVG format.', 'purelyst' ); ?></p>
+                                                    </div>
+
+                                                    <!-- Site Favicon -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Site Favicon', 'purelyst' ); ?></label>
+                                                        <div class="purelyst-media-upload">
+                                                            <?php 
+                                                            $site_icon = get_option( 'site_icon' );
+                                                            $favicon_url = $site_icon ? wp_get_attachment_image_url( $site_icon, 'thumbnail' ) : '';
+                                                            ?>
+                                                            <div class="purelyst-media-preview purelyst-media-preview-sm <?php echo $favicon_url ? 'has-image' : ''; ?>" id="favicon-preview">
+                                                                <?php if ( $favicon_url ) : ?>
+                                                                    <img src="<?php echo esc_url( $favicon_url ); ?>" alt="">
+                                                                <?php else : ?>
+                                                                    <span class="material-symbols-outlined">add_photo_alternate</span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                            <input type="hidden" name="site_favicon" id="site_favicon" value="<?php echo esc_attr( $site_icon ); ?>">
+                                                            <div class="purelyst-media-actions">
+                                                                <button type="button" class="purelyst-btn purelyst-btn-sm purelyst-btn-secondary" id="upload-favicon-btn">
+                                                                    <span class="material-symbols-outlined">upload</span>
+                                                                    <?php esc_html_e( 'Upload', 'purelyst' ); ?>
+                                                                </button>
+                                                                <button type="button" class="purelyst-btn purelyst-btn-sm purelyst-btn-outline" id="remove-favicon-btn" <?php echo ! $favicon_url ? 'style="display:none;"' : ''; ?>>
+                                                                    <span class="material-symbols-outlined">delete</span>
+                                                                    <?php esc_html_e( 'Remove', 'purelyst' ); ?>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <p class="purelyst-field-desc"><?php esc_html_e( 'Recommended size: 512x512 pixels. PNG format.', 'purelyst' ); ?></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="purelyst-divider"></div>
+
                                                 <!-- Site Layout -->
                                                 <div class="purelyst-field">
                                                     <label class="purelyst-label"><?php esc_html_e( 'Site Layout', 'purelyst' ); ?></label>

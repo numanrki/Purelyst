@@ -37,7 +37,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="header-actions">
             <?php if ( get_theme_mod( 'purelyst_show_search', true ) ) : ?>
                 <button class="search-toggle" aria-label="<?php esc_attr_e( 'Search', 'purelyst' ); ?>" aria-expanded="false" data-search-toggle>
-                    <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                    <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+                    <span class="material-symbols-outlined close-icon" aria-hidden="true">close</span>
                 </button>
             <?php endif; ?>
 
@@ -57,6 +58,19 @@ if ( ! defined( 'ABSPATH' ) ) {
             <button class="mobile-menu-toggle" aria-label="<?php esc_attr_e( 'Toggle Menu', 'purelyst' ); ?>" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
                 <span class="material-symbols-outlined" aria-hidden="true">menu</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Search Bar Slide Down -->
+    <div class="search-bar-wrapper" id="search-bar" aria-hidden="true">
+        <div class="search-bar-inner">
+            <form role="search" method="get" class="search-bar-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+                <span class="material-symbols-outlined search-bar-icon" aria-hidden="true">search</span>
+                <input type="search" class="search-bar-input" placeholder="<?php esc_attr_e( 'Search articles...', 'purelyst' ); ?>" value="<?php echo get_search_query(); ?>" name="s" id="header-search-input" autocomplete="off">
+                <button type="submit" class="search-bar-submit">
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                </button>
+            </form>
         </div>
     </div>
 
