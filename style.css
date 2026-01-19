@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.5
+Version: 1.0.7
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -360,12 +360,43 @@ img {
 
 .search-bar-input {
     flex: 1;
-    border: none;
-    background: transparent;
+    border: none !important;
+    border-width: 0 !important;
+    background: transparent !important;
     font-size: 1.125rem;
     font-family: var(--font-family);
     color: var(--color-text-primary);
-    outline: none;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+.search-bar-input:focus,
+.search-bar-input:active,
+.search-bar-input:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove webkit search input styling */
+.search-bar-input::-webkit-search-decoration,
+.search-bar-input::-webkit-search-cancel-button,
+.search-bar-input::-webkit-search-results-button,
+.search-bar-input::-webkit-search-results-decoration {
+    -webkit-appearance: none !important;
+    display: none !important;
+}
+
+input[type="search"].search-bar-input {
+    -webkit-appearance: textfield !important;
+    -moz-appearance: textfield !important;
+    appearance: textfield !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .search-bar-input::placeholder {
