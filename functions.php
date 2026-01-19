@@ -492,3 +492,58 @@ function purelyst_localize_scripts() {
     ) );
 }
 add_action( 'wp_enqueue_scripts', 'purelyst_localize_scripts' );
+
+/**
+ * Load Admin Settings
+ */
+if ( is_admin() ) {
+    require_once PURELYST_DIR . '/inc/admin-settings.php';
+}
+
+/**
+ * Enqueue custom CSS generated from theme settings
+ */
+function purelyst_custom_styles() {
+    $upload_dir = wp_upload_dir();
+    $css_file = $upload_dir['basedir'] . '/purelyst/custom-styles.css';
+    
+    if ( file_exists( $css_file ) ) {
+        wp_enqueue_style(
+            'purelyst-custom-styles',
+            $upload_dir['baseurl'] . '/purelyst/custom-styles.css',
+            array( 'purelyst-style' ),
+            filemtime( $css_file )
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'purelyst_custom_styles', 20 );
+
+/**
+ * Apply theme settings to frontend
+ */
+function purelyst_apply_settings() {
+    // Get settings
+    $settings = get_option( 'purelyst_settings', array() );
+    
+    // Default values
+    $defaults = array(
+        'show_reading_progress' => true,
+        'enable_dark_mode'      => true,
+    );
+    
+    $settings = wp_parse_args( $settings, $defaults );
+    
+    // Add body classes based on settings
+    add_filter( 'body_class', function( $classes ) use ( $settings ) {
+        if ( ! empty( $settings['site_layout'] ) && $settings['site_layout'] === 'boxed' ) {
+            $classes[] = 'layout-boxed';
+        }
+        
+        if ( empty( $settings['enable_dark_mode'] ) ) {
+            $classes[] = 'no-dark-mode';
+        }
+        
+        return $classes;
+    } );
+}
+add_action( 'wp', 'purelyst_apply_settings' );

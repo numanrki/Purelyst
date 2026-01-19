@@ -1,0 +1,992 @@
+/**
+ * Purelyst Theme Admin Styles
+ *
+ * @package Purelyst
+ */
+
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+:root {
+    --admin-primary: #2b403e;
+    --admin-primary-hover: #3d5553;
+    --admin-accent: #B5A795;
+    --admin-wp-dark: #1d2327;
+    --admin-wp-hover: #2c3338;
+    --admin-background: #f0f0f1;
+    --admin-surface: #ffffff;
+    --admin-border: #e2e4e7;
+    --admin-text: #1e293b;
+    --admin-text-muted: #64748b;
+    --admin-shadow-soft: 0px 4px 24px rgba(0, 0, 0, 0.04);
+    --admin-shadow-float: 0px 12px 32px rgba(43, 64, 62, 0.08);
+    --admin-radius: 12px;
+    --admin-radius-sm: 8px;
+    --admin-font: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ==========================================================================
+   Base Reset for Admin
+   ========================================================================== */
+.purelyst-admin-wrap {
+    font-family: var(--admin-font);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--admin-text);
+    background-color: var(--admin-background);
+    min-height: 100vh;
+    margin-left: -20px;
+    margin-top: -20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.purelyst-admin-wrap *,
+.purelyst-admin-wrap *::before,
+.purelyst-admin-wrap *::after {
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Admin Header
+   ========================================================================== */
+.purelyst-admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 24px;
+    background-color: var(--admin-surface);
+    border-bottom: 1px solid var(--admin-border);
+    position: sticky;
+    top: 32px;
+    z-index: 100;
+}
+
+@media screen and (max-width: 782px) {
+    .purelyst-admin-header {
+        top: 46px;
+    }
+}
+
+.purelyst-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--admin-text-muted);
+}
+
+.purelyst-brand {
+    font-weight: 600;
+    color: var(--admin-primary);
+}
+
+.purelyst-breadcrumb .material-symbols-outlined {
+    font-size: 14px;
+}
+
+.purelyst-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.purelyst-user-greeting {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--admin-text-muted);
+}
+
+.purelyst-user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--admin-border);
+}
+
+/* ==========================================================================
+   Main Content Area
+   ========================================================================== */
+.purelyst-admin-main {
+    padding: 24px 40px;
+    min-height: calc(100vh - 80px);
+}
+
+@media screen and (max-width: 1024px) {
+    .purelyst-admin-main {
+        padding: 20px;
+    }
+}
+
+.purelyst-admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   Page Header
+   ========================================================================== */
+.purelyst-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.purelyst-page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--admin-wp-dark);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.purelyst-page-desc {
+    font-size: 14px;
+    color: var(--admin-text-muted);
+    margin: 4px 0 0;
+}
+
+.purelyst-page-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.purelyst-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-family: var(--admin-font);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: var(--admin-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.purelyst-btn .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.purelyst-btn-primary {
+    background-color: var(--admin-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(43, 64, 62, 0.2);
+}
+
+.purelyst-btn-primary:hover {
+    background-color: var(--admin-primary-hover);
+    box-shadow: 0 6px 16px rgba(43, 64, 62, 0.25);
+    transform: translateY(-1px);
+}
+
+.purelyst-btn-secondary {
+    background-color: var(--admin-surface);
+    color: var(--admin-text-muted);
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.purelyst-btn-secondary:hover {
+    background-color: #f9fafb;
+    color: var(--admin-text);
+}
+
+.purelyst-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Settings Card
+   ========================================================================== */
+.purelyst-settings-card {
+    background-color: var(--admin-surface);
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow-float);
+    border: 1px solid var(--admin-border);
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Tabs Navigation
+   ========================================================================== */
+.purelyst-tabs-nav {
+    display: flex;
+    padding: 0 24px;
+    background-color: var(--admin-surface);
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.purelyst-tab {
+    position: relative;
+    padding: 16px 16px;
+    font-family: var(--admin-font);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--admin-text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.purelyst-tab:hover {
+    color: var(--admin-text);
+}
+
+.purelyst-tab.active {
+    font-weight: 700;
+    color: var(--admin-primary);
+}
+
+.purelyst-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--admin-primary);
+    border-radius: 3px 3px 0 0;
+}
+
+/* ==========================================================================
+   Tab Panels
+   ========================================================================== */
+.purelyst-tabs-content {
+    background-color: var(--admin-surface);
+}
+
+.purelyst-tab-panel {
+    display: none;
+}
+
+.purelyst-tab-panel.active {
+    display: block;
+}
+
+/* ==========================================================================
+   Settings Layout (Two Columns)
+   ========================================================================== */
+.purelyst-settings-layout {
+    display: flex;
+    min-height: 600px;
+}
+
+@media screen and (max-width: 1024px) {
+    .purelyst-settings-layout {
+        flex-direction: column;
+    }
+}
+
+.purelyst-settings-controls {
+    flex: 1;
+    padding: 32px;
+    border-right: 1px solid var(--admin-border);
+    background-color: var(--admin-surface);
+}
+
+@media screen and (max-width: 1024px) {
+    .purelyst-settings-controls {
+        border-right: none;
+        border-bottom: 1px solid var(--admin-border);
+    }
+}
+
+.purelyst-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--admin-text);
+    margin: 0 0 24px;
+}
+
+.purelyst-section-title .material-symbols-outlined {
+    color: var(--admin-primary);
+    font-size: 24px;
+}
+
+/* ==========================================================================
+   Settings Group
+   ========================================================================== */
+.purelyst-settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   Form Fields
+   ========================================================================== */
+.purelyst-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.purelyst-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+.purelyst-label-sm {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--admin-text-muted);
+}
+
+.purelyst-field-desc {
+    font-size: 12px;
+    color: #9ca3af;
+    margin: 0;
+}
+
+/* Select Wrapper */
+.purelyst-select-wrap {
+    position: relative;
+}
+
+.purelyst-select-wrap .material-symbols-outlined {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--admin-text-muted);
+    pointer-events: none;
+    font-size: 20px;
+}
+
+.purelyst-select {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-family: var(--admin-font);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--admin-text);
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--admin-radius-sm);
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.purelyst-select:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(43, 64, 62, 0.1);
+}
+
+.purelyst-select-sm .purelyst-select {
+    padding: 8px 32px 8px 12px;
+    font-size: 13px;
+}
+
+.purelyst-select-sm .material-symbols-outlined {
+    font-size: 18px;
+    right: 8px;
+}
+
+/* Text Input */
+.purelyst-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: var(--admin-font);
+    font-size: 14px;
+    color: var(--admin-text);
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--admin-radius-sm);
+    transition: all 0.2s ease;
+}
+
+.purelyst-input:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(43, 64, 62, 0.1);
+}
+
+.purelyst-input::placeholder {
+    color: #9ca3af;
+}
+
+/* ==========================================================================
+   Range Slider
+   ========================================================================== */
+.purelyst-range-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.purelyst-range-value {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--admin-text-muted);
+}
+
+.purelyst-range-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-family: monospace;
+    font-weight: 600;
+    color: var(--admin-primary);
+    background-color: rgba(43, 64, 62, 0.1);
+    border-radius: 4px;
+}
+
+.purelyst-range {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    appearance: none;
+    cursor: pointer;
+    margin: 8px 0;
+}
+
+.purelyst-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--admin-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    margin-top: -7px;
+}
+
+.purelyst-range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+}
+
+.purelyst-range:focus::-webkit-slider-runnable-track {
+    background: #d1d5db;
+}
+
+.purelyst-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--admin-primary);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.purelyst-range::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+}
+
+.purelyst-range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+/* ==========================================================================
+   Config Box
+   ========================================================================== */
+.purelyst-config-box {
+    padding: 20px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--admin-radius-sm);
+}
+
+.purelyst-config-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #9ca3af;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+}
+
+.purelyst-config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .purelyst-config-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Toggle Switch
+   ========================================================================== */
+.purelyst-toggle-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.purelyst-toggle-info {
+    flex: 1;
+}
+
+.purelyst-toggle-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--admin-text);
+    margin: 0;
+}
+
+.purelyst-toggle-desc {
+    font-size: 12px;
+    color: var(--admin-text-muted);
+    margin: 4px 0 0;
+}
+
+.purelyst-toggle {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.purelyst-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.purelyst-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db;
+    border-radius: 24px;
+    transition: all 0.3s ease;
+}
+
+.purelyst-toggle-slider::before {
+    position: absolute;
+    content: '';
+    width: 20px;
+    height: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.purelyst-toggle input:checked + .purelyst-toggle-slider {
+    background-color: var(--admin-primary);
+}
+
+.purelyst-toggle input:checked + .purelyst-toggle-slider::before {
+    transform: translateX(24px);
+}
+
+.purelyst-toggle input:focus + .purelyst-toggle-slider {
+    box-shadow: 0 0 0 3px rgba(43, 64, 62, 0.1);
+}
+
+/* ==========================================================================
+   Color Picker
+   ========================================================================== */
+.purelyst-color-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.purelyst-color-picker {
+    width: 100%;
+    max-width: 200px;
+}
+
+/* Override WordPress color picker styles */
+.purelyst-admin-wrap .wp-picker-container {
+    display: flex;
+    align-items: center;
+}
+
+.purelyst-admin-wrap .wp-color-result {
+    border-radius: var(--admin-radius-sm);
+    border: 2px solid #e2e8f0;
+    height: 36px;
+    box-shadow: none;
+}
+
+.purelyst-admin-wrap .wp-color-result:hover,
+.purelyst-admin-wrap .wp-color-result:focus {
+    border-color: var(--admin-primary);
+}
+
+/* ==========================================================================
+   Divider
+   ========================================================================== */
+.purelyst-divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 8px 0;
+}
+
+/* ==========================================================================
+   Preview Panel
+   ========================================================================== */
+.purelyst-preview-panel {
+    width: 480px;
+    padding: 32px;
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 1024px) {
+    .purelyst-preview-panel {
+        width: 100%;
+    }
+}
+
+.purelyst-preview-decoration {
+    position: absolute;
+    top: -128px;
+    right: -128px;
+    width: 256px;
+    height: 256px;
+    background-color: rgba(43, 64, 62, 0.05);
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+}
+
+.purelyst-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.purelyst-preview-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #9ca3af;
+    text-transform: uppercase;
+}
+
+.purelyst-preview-devices {
+    display: flex;
+    gap: 8px;
+}
+
+.purelyst-device-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.purelyst-device-btn:hover {
+    color: var(--admin-primary);
+}
+
+.purelyst-device-btn.active {
+    background-color: var(--admin-surface);
+    border-color: #e2e8f0;
+    color: var(--admin-primary);
+}
+
+.purelyst-device-btn .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   Preview Card
+   ========================================================================== */
+.purelyst-preview-card {
+    width: 100%;
+    background-color: var(--admin-surface);
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow-soft);
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.purelyst-preview-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.purelyst-preview-image {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: linear-gradient(135deg, #d4d4aa 0%, #a8b8a0 50%, #8ba88d 100%);
+    overflow: hidden;
+}
+
+.purelyst-preview-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--admin-primary);
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.purelyst-preview-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.purelyst-preview-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+.purelyst-preview-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--admin-text);
+    line-height: 1.3;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.purelyst-preview-excerpt {
+    font-size: 14px;
+    color: var(--admin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.purelyst-preview-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+}
+
+.purelyst-preview-author-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--admin-accent);
+}
+
+.purelyst-preview-author-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+.purelyst-preview-quote {
+    margin-top: 32px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.purelyst-preview-quote p {
+    font-size: 12px;
+    font-style: italic;
+    color: #9ca3af;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Admin Footer
+   ========================================================================== */
+.purelyst-admin-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.purelyst-admin-footer p {
+    margin: 0;
+}
+
+.purelyst-footer-links {
+    display: flex;
+    gap: 16px;
+}
+
+.purelyst-footer-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.purelyst-footer-links a:hover {
+    color: var(--admin-primary);
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Notification Toast
+   ========================================================================== */
+.purelyst-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background-color: var(--admin-primary);
+    color: #ffffff;
+    border-radius: var(--admin-radius-sm);
+    box-shadow: 0 8px 24px rgba(43, 64, 62, 0.3);
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.purelyst-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.purelyst-toast.success {
+    background-color: #059669;
+}
+
+.purelyst-toast.error {
+    background-color: #dc2626;
+}
+
+.purelyst-toast .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* ==========================================================================
+   Loading Spinner
+   ========================================================================== */
+.purelyst-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: purelyst-spin 0.8s linear infinite;
+}
+
+@keyframes purelyst-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+@media screen and (max-width: 782px) {
+    .purelyst-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .purelyst-page-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .purelyst-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .purelyst-tabs-nav {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .purelyst-tab {
+        white-space: nowrap;
+    }
+}
+
+/* ==========================================================================
+   WordPress Color Picker Overrides
+   ========================================================================== */
+.purelyst-admin-wrap .wp-picker-container .wp-color-result.button {
+    margin: 0;
+    padding: 0;
+    min-height: 36px;
+}
+
+.purelyst-admin-wrap .wp-picker-holder {
+    position: absolute;
+    z-index: 100;
+}
+
+.purelyst-admin-wrap .iris-picker {
+    border-radius: var(--admin-radius-sm);
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--admin-shadow-float);
+}
