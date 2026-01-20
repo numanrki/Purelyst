@@ -104,7 +104,15 @@ if ( $hero_post_id ) {
                             </div>
                         <?php else : ?>
                             <div class="hero-image-placeholder">
-                                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ); ?>" alt="" class="placeholder-svg">
+                                <img 
+                                    src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ); ?>" 
+                                    alt="<?php esc_attr_e( 'Featured image placeholder', 'purelyst' ); ?>" 
+                                    class="placeholder-svg"
+                                    width="800"
+                                    height="600"
+                                    fetchpriority="high"
+                                    decoding="async"
+                                >
                             </div>
                         <?php endif; ?>
                     </div>

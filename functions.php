@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define theme constants
  */
-define( 'PURELYST_VERSION', '1.0.20' );
+define( 'PURELYST_VERSION', '1.0.22' );
 define( 'PURELYST_DIR', get_template_directory() );
 define( 'PURELYST_URI', get_template_directory_uri() );
 
@@ -233,28 +233,27 @@ add_action( 'wp_enqueue_scripts', 'purelyst_scripts' );
 
 /**
  * Make icon font non-render-blocking by loading as print then swapping to all
+ * Note: Main stylesheet is NOT made async as it hurts Speed Index
  */
-function purelyst_async_icon_styles( $tag, $handle, $src ) {
+function purelyst_async_styles( $tag, $handle, $src ) {
+    // Only make icon font async (it's truly non-critical)
     if ( 'purelyst-icons' === $handle ) {
-        // Load as print, then swap to all media when loaded
         $tag = str_replace( "media='print'", "media='print' onload=\"this.media='all'\"", $tag );
-        // Add noscript fallback
         $tag .= '<noscript><link rel="stylesheet" href="' . esc_url( $src ) . '"></noscript>';
+        return $tag;
     }
+    
     return $tag;
 }
-add_filter( 'style_loader_tag', 'purelyst_async_icon_styles', 10, 3 );
+add_filter( 'style_loader_tag', 'purelyst_async_styles', 10, 3 );
 
 /**
- * Add critical preconnects and preloads - runs very early in head
+ * Critical preloads are now in header.php directly for earliest possible loading
+ * This function is kept for backwards compatibility but preconnects moved to header.php
  */
 function purelyst_critical_preloads() {
-    // Preconnect to Google Fonts origins (critical for FCP/LCP)
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-    
-    // Preload critical Manrope font file (Latin subset, most common)
-    echo '<link rel="preload" href="https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin>' . "\n";
+    // Preconnects and preloads are now hardcoded in header.php
+    // for maximum priority (before any wp_head output)
 }
 add_action( 'wp_head', 'purelyst_critical_preloads', 1 );
 
@@ -294,22 +293,92 @@ function purelyst_preload_lcp_image() {
 add_action( 'wp_head', 'purelyst_preload_lcp_image', 2 );
 
 /**
- * Add resource hints for performance (backup/additional hints)
+ * Add resource hints for performance (backup/additional hints via WP filter)
  */
 function purelyst_resource_hints( $hints, $relation_type ) {
-    if ( 'preconnect' === $relation_type ) {
-        $hints[] = array(
-            'href'        => 'https://fonts.googleapis.com',
-        );
-        $hints[] = array(
-            'href'        => 'https://fonts.gstatic.com',
-            'crossorigin' => 'anonymous',
-        );
-    }
-
+    // Preconnects are now hardcoded in header.php for maximum priority
+    // This function provides backup hints via WordPress filter
     return $hints;
 }
 add_filter( 'wp_resource_hints', 'purelyst_resource_hints', 10, 2 );
+
+/**
+ * Defer non-critical JavaScript (jQuery)
+ */
+function purelyst_defer_scripts( $tag, $handle, $src ) {
+    // List of scripts to defer
+    $defer_scripts = array( 'jquery-core', 'jquery-migrate' );
+    
+    if ( in_array( $handle, $defer_scripts, true ) ) {
+        // Don't defer in admin
+        if ( is_admin() ) {
+            return $tag;
+        }
+        // Add defer attribute
+        return str_replace( ' src=', ' defer src=', $tag );
+    }
+    
+    return $tag;
+}
+add_filter( 'script_loader_tag', 'purelyst_defer_scripts', 10, 3 );
+
+/**
+ * Remove WordPress block library CSS on front-end
+ * This saves ~14KB of unused CSS
+ */
+function purelyst_dequeue_block_styles() {
+    // Only dequeue on front-end, not in admin or block editor
+    if ( is_admin() ) {
+        return;
+    }
+    
+    // Always dequeue on front page (it doesn't use blocks)
+    if ( is_front_page() || is_home() ) {
+        wp_dequeue_style( 'wp-block-library' );
+        wp_dequeue_style( 'wp-block-library-theme' );
+        wp_dequeue_style( 'wc-blocks-style' );
+        wp_dequeue_style( 'global-styles' );
+        return;
+    }
+    
+    // For other pages, check if post uses blocks
+    $post = get_post();
+    if ( $post && ! has_blocks( $post->post_content ) ) {
+        wp_dequeue_style( 'wp-block-library' );
+        wp_dequeue_style( 'wp-block-library-theme' );
+        wp_dequeue_style( 'wc-blocks-style' );
+        wp_dequeue_style( 'global-styles' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'purelyst_dequeue_block_styles', 100 );
+
+/**
+ * Preload LCP placeholder image on front page when no featured image
+ */
+function purelyst_preload_placeholder_lcp() {
+    if ( ! is_front_page() ) {
+        return;
+    }
+    
+    // Get hero post
+    $hero_post_id = get_theme_mod( 'purelyst_hero_post', '' );
+    
+    if ( ! $hero_post_id ) {
+        $sticky = get_option( 'sticky_posts' );
+        if ( ! empty( $sticky ) ) {
+            $hero_post_id = $sticky[0];
+        } else {
+            $recent = get_posts( array( 'posts_per_page' => 1, 'fields' => 'ids' ) );
+            $hero_post_id = ! empty( $recent ) ? $recent[0] : 0;
+        }
+    }
+    
+    // If no featured image, preload the placeholder
+    if ( ! $hero_post_id || ! has_post_thumbnail( $hero_post_id ) ) {
+        echo '<link rel="preload" as="image" href="' . esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ) . '" fetchpriority="high">' . "\n";
+    }
+}
+add_action( 'wp_head', 'purelyst_preload_placeholder_lcp', 2 );
 
 /**
  * Register widget areas
