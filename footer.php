@@ -130,6 +130,17 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
 </footer>
 
+<?php
+// Scroll to Top Button
+$purelyst_settings = get_option( 'purelyst_settings', array() );
+$show_scroll_top = isset( $purelyst_settings['show_scroll_top'] ) ? $purelyst_settings['show_scroll_top'] : true;
+
+if ( $show_scroll_top ) : ?>
+    <button type="button" id="scroll-to-top" class="scroll-to-top" aria-label="<?php esc_attr_e( 'Scroll to top', 'purelyst' ); ?>">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
+    </button>
+<?php endif; ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>

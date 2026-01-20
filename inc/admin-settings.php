@@ -45,6 +45,13 @@ class Purelyst_Admin_Settings {
         'text_color'            => '#2b403e',
         'enable_dark_mode'      => true,
         
+        // Read More Button
+        'read_more_enable'      => true,
+        'read_more_text'        => 'Read More',
+        'read_more_bg_color'    => '#2b403e',
+        'read_more_text_color'  => '#ffffff',
+        'read_more_hover_color' => '#1a2a29',
+        
         // Footer
         'footer_copyright'      => '© {year} Purelyst Theme. All rights reserved.',
         'footer_tagline'        => 'Crafted with intention.',
@@ -227,6 +234,9 @@ class Purelyst_Admin_Settings {
             case 'accent_color':
             case 'background_color':
             case 'text_color':
+            case 'read_more_bg_color':
+            case 'read_more_text_color':
+            case 'read_more_hover_color':
                 return sanitize_hex_color( $value );
 
             case 'container_width':
@@ -242,11 +252,15 @@ class Purelyst_Admin_Settings {
             case 'fluid_typography':
             case 'enable_dark_mode':
             case 'show_footer_social':
+            case 'read_more_enable':
                 return (bool) $value;
 
             case 'footer_copyright':
             case 'footer_tagline':
                 return wp_kses_post( $value );
+
+            case 'read_more_text':
+                return sanitize_text_field( $value );
 
             default:
                 return sanitize_text_field( $value );
@@ -276,6 +290,24 @@ class Purelyst_Admin_Settings {
         }
         
         $css .= '}' . "\n";
+
+        // Read More Button Styles
+        if ( ! empty( $settings['read_more_bg_color'] ) || ! empty( $settings['read_more_text_color'] ) ) {
+            $css .= '.read-more-btn {' . "\n";
+            if ( ! empty( $settings['read_more_bg_color'] ) ) {
+                $css .= '    background-color: ' . $settings['read_more_bg_color'] . ';' . "\n";
+            }
+            if ( ! empty( $settings['read_more_text_color'] ) ) {
+                $css .= '    color: ' . $settings['read_more_text_color'] . ';' . "\n";
+            }
+            $css .= '}' . "\n";
+        }
+
+        if ( ! empty( $settings['read_more_hover_color'] ) ) {
+            $css .= '.read-more-btn:hover {' . "\n";
+            $css .= '    background-color: ' . $settings['read_more_hover_color'] . ';' . "\n";
+            $css .= '}' . "\n";
+        }
 
         // Save to file
         $upload_dir = wp_upload_dir();
@@ -336,6 +368,9 @@ class Purelyst_Admin_Settings {
                         <div class="purelyst-tabs-nav">
                             <button class="purelyst-tab active" data-tab="general">
                                 <?php esc_html_e( 'General', 'purelyst' ); ?>
+                            </button>
+                            <button class="purelyst-tab" data-tab="customize">
+                                <?php esc_html_e( 'Customize', 'purelyst' ); ?>
                             </button>
                             <button class="purelyst-tab" data-tab="typography">
                                 <?php esc_html_e( 'Typography', 'purelyst' ); ?>
@@ -492,6 +527,75 @@ class Purelyst_Admin_Settings {
                                                         <input type="checkbox" name="show_scroll_top" value="1" <?php checked( $settings['show_scroll_top'], true ); ?>>
                                                         <span class="purelyst-toggle-slider"></span>
                                                     </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Preview Panel -->
+                                        <div class="purelyst-preview-panel">
+                                            <?php $this->render_preview_panel(); ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Customize Tab -->
+                                <div class="purelyst-tab-panel" data-panel="customize">
+                                    <div class="purelyst-settings-layout">
+                                        <div class="purelyst-settings-controls">
+                                            <h2 class="purelyst-section-title">
+                                                <span class="material-symbols-outlined">brush</span>
+                                                <?php esc_html_e( 'Customize Elements', 'purelyst' ); ?>
+                                            </h2>
+
+                                            <div class="purelyst-settings-group">
+                                                <!-- Read More Button Section -->
+                                                <div class="purelyst-config-box">
+                                                    <h3 class="purelyst-config-title"><?php esc_html_e( 'READ MORE BUTTON', 'purelyst' ); ?></h3>
+                                                    
+                                                    <!-- Enable Read More Button -->
+                                                    <div class="purelyst-toggle-field">
+                                                        <div class="purelyst-toggle-info">
+                                                            <h4 class="purelyst-toggle-title"><?php esc_html_e( 'Enable Read More Button', 'purelyst' ); ?></h4>
+                                                            <p class="purelyst-toggle-desc"><?php esc_html_e( 'Show "Read More" button on archive page cards.', 'purelyst' ); ?></p>
+                                                        </div>
+                                                        <label class="purelyst-toggle">
+                                                            <input type="checkbox" name="read_more_enable" value="1" <?php checked( $settings['read_more_enable'], true ); ?>>
+                                                            <span class="purelyst-toggle-slider"></span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="purelyst-divider"></div>
+
+                                                    <!-- Button Text -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Button Text', 'purelyst' ); ?></label>
+                                                        <input type="text" name="read_more_text" class="purelyst-input" value="<?php echo esc_attr( $settings['read_more_text'] ); ?>">
+                                                        <p class="purelyst-field-desc"><?php esc_html_e( 'Text displayed on the button.', 'purelyst' ); ?></p>
+                                                    </div>
+
+                                                    <!-- Button Background Color -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Button Background Color', 'purelyst' ); ?></label>
+                                                        <div class="purelyst-color-field">
+                                                            <input type="text" name="read_more_bg_color" class="purelyst-color-picker" value="<?php echo esc_attr( $settings['read_more_bg_color'] ); ?>" data-default-color="#2b403e">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Button Text Color -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Button Text Color', 'purelyst' ); ?></label>
+                                                        <div class="purelyst-color-field">
+                                                            <input type="text" name="read_more_text_color" class="purelyst-color-picker" value="<?php echo esc_attr( $settings['read_more_text_color'] ); ?>" data-default-color="#ffffff">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Button Hover Color -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Button Hover Background Color', 'purelyst' ); ?></label>
+                                                        <div class="purelyst-color-field">
+                                                            <input type="text" name="read_more_hover_color" class="purelyst-color-picker" value="<?php echo esc_attr( $settings['read_more_hover_color'] ); ?>" data-default-color="#1a2a29">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

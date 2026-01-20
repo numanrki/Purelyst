@@ -15,12 +15,90 @@ if ( ! defined( 'ABSPATH' ) ) {
 function purelyst_customize_register( $wp_customize ) {
 
     // ==========================================================================
+    // Purelyst Theme Panel
+    // ==========================================================================
+    $wp_customize->add_panel( 'purelyst_panel', array(
+        'title'       => __( 'Purelyst Theme', 'purelyst' ),
+        'description' => __( 'Customize all Purelyst theme settings.', 'purelyst' ),
+        'priority'    => 30,
+    ) );
+
+    // ==========================================================================
+    // Read More Button Section
+    // ==========================================================================
+    $wp_customize->add_section( 'purelyst_read_more_section', array(
+        'title'       => __( 'Read More Button', 'purelyst' ),
+        'description' => __( 'Customize the Read More button on archive pages.', 'purelyst' ),
+        'panel'       => 'purelyst_panel',
+        'priority'    => 10,
+    ) );
+
+    // Enable Read More Button
+    $wp_customize->add_setting( 'purelyst_read_more_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'purelyst_sanitize_checkbox',
+    ) );
+
+    $wp_customize->add_control( 'purelyst_read_more_enable', array(
+        'label'       => __( 'Enable Read More Button', 'purelyst' ),
+        'description' => __( 'Show Read More button on archive card items.', 'purelyst' ),
+        'section'     => 'purelyst_read_more_section',
+        'type'        => 'checkbox',
+    ) );
+
+    // Read More Button Text
+    $wp_customize->add_setting( 'purelyst_read_more_text', array(
+        'default'           => __( 'Read More', 'purelyst' ),
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'purelyst_read_more_text', array(
+        'label'   => __( 'Button Text', 'purelyst' ),
+        'section' => 'purelyst_read_more_section',
+        'type'    => 'text',
+    ) );
+
+    // Read More Button Background Color
+    $wp_customize->add_setting( 'purelyst_read_more_bg_color', array(
+        'default'           => '#2b403e',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_bg_color', array(
+        'label'   => __( 'Button Background Color', 'purelyst' ),
+        'section' => 'purelyst_read_more_section',
+    ) ) );
+
+    // Read More Button Text Color
+    $wp_customize->add_setting( 'purelyst_read_more_text_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_text_color', array(
+        'label'   => __( 'Button Text Color', 'purelyst' ),
+        'section' => 'purelyst_read_more_section',
+    ) ) );
+
+    // Read More Button Hover Background Color
+    $wp_customize->add_setting( 'purelyst_read_more_hover_bg_color', array(
+        'default'           => '#1a2a29',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_hover_bg_color', array(
+        'label'   => __( 'Button Hover Background Color', 'purelyst' ),
+        'section' => 'purelyst_read_more_section',
+    ) ) );
+
+    // ==========================================================================
     // Hero Section
     // ==========================================================================
     $wp_customize->add_section( 'purelyst_hero_section', array(
         'title'       => __( 'Hero Section', 'purelyst' ),
         'description' => __( 'Customize the homepage hero section.', 'purelyst' ),
-        'priority'    => 30,
+        'panel'       => 'purelyst_panel',
+        'priority'    => 20,
     ) );
 
     // Featured Post
@@ -66,7 +144,8 @@ function purelyst_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'purelyst_sidebar_section', array(
         'title'       => __( 'Sidebar Settings', 'purelyst' ),
         'description' => __( 'Customize the sidebar widgets.', 'purelyst' ),
-        'priority'    => 35,
+        'panel'       => 'purelyst_panel',
+        'priority'    => 30,
     ) );
 
     // Author Widget
@@ -132,6 +211,7 @@ function purelyst_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'purelyst_newsletter_section', array(
         'title'       => __( 'Newsletter Widget', 'purelyst' ),
         'description' => __( 'Customize the newsletter signup widget.', 'purelyst' ),
+        'panel'       => 'purelyst_panel',
         'priority'    => 40,
     ) );
 
@@ -197,7 +277,8 @@ function purelyst_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'purelyst_footer_section', array(
         'title'       => __( 'Footer Settings', 'purelyst' ),
         'description' => __( 'Customize the footer area.', 'purelyst' ),
-        'priority'    => 45,
+        'panel'       => 'purelyst_panel',
+        'priority'    => 50,
     ) );
 
     $wp_customize->add_setting( 'purelyst_footer_tagline', array(
@@ -229,7 +310,8 @@ function purelyst_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'purelyst_social_section', array(
         'title'       => __( 'Social Links', 'purelyst' ),
         'description' => __( 'Add your social media links.', 'purelyst' ),
-        'priority'    => 50,
+        'panel'       => 'purelyst_panel',
+        'priority'    => 60,
     ) );
 
     $wp_customize->add_setting( 'purelyst_social_website', array(
@@ -283,7 +365,8 @@ function purelyst_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'purelyst_header_section', array(
         'title'       => __( 'Header Settings', 'purelyst' ),
         'description' => __( 'Customize the header area.', 'purelyst' ),
-        'priority'    => 25,
+        'panel'       => 'purelyst_panel',
+        'priority'    => 15,
     ) );
 
     $wp_customize->add_setting( 'purelyst_header_subscribe_text', array(
@@ -326,7 +409,8 @@ function purelyst_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'purelyst_posts_section', array(
         'title'       => __( 'Posts Settings', 'purelyst' ),
         'description' => __( 'Customize how posts are displayed.', 'purelyst' ),
-        'priority'    => 55,
+        'panel'       => 'purelyst_panel',
+        'priority'    => 25,
     ) );
 
     $wp_customize->add_setting( 'purelyst_recent_posts_title', array(
@@ -361,41 +445,6 @@ function purelyst_customize_register( $wp_customize ) {
         'section' => 'purelyst_posts_section',
         'type'    => 'text',
     ) );
-
-    // Read More Button Text
-    $wp_customize->add_setting( 'purelyst_read_more_text', array(
-        'default'           => __( 'Read More', 'purelyst' ),
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-
-    $wp_customize->add_control( 'purelyst_read_more_text', array(
-        'label'       => __( 'Read More Button Text', 'purelyst' ),
-        'description' => __( 'Text displayed on archive card buttons.', 'purelyst' ),
-        'section'     => 'purelyst_posts_section',
-        'type'        => 'text',
-    ) );
-
-    // Read More Button Color
-    $wp_customize->add_setting( 'purelyst_read_more_color', array(
-        'default'           => '#2b403e',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ) );
-
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_color', array(
-        'label'   => __( 'Read More Button Color', 'purelyst' ),
-        'section' => 'purelyst_posts_section',
-    ) ) );
-
-    // Read More Button Hover Color
-    $wp_customize->add_setting( 'purelyst_read_more_hover_color', array(
-        'default'           => '#1a2a29',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ) );
-
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_hover_color', array(
-        'label'   => __( 'Read More Button Hover Color', 'purelyst' ),
-        'section' => 'purelyst_posts_section',
-    ) ) );
 }
 add_action( 'customize_register', 'purelyst_customize_register' );
 
@@ -412,8 +461,9 @@ function purelyst_sanitize_checkbox( $checked ) {
 function purelyst_customizer_css() {
     $primary_color = get_theme_mod( 'purelyst_primary_color', '#2b403e' );
     $accent_color = get_theme_mod( 'purelyst_accent_color', '#B5A795' );
-    $read_more_color = get_theme_mod( 'purelyst_read_more_color', '#2b403e' );
-    $read_more_hover = get_theme_mod( 'purelyst_read_more_hover_color', '#1a2a29' );
+    $read_more_bg = get_theme_mod( 'purelyst_read_more_bg_color', '#2b403e' );
+    $read_more_text = get_theme_mod( 'purelyst_read_more_text_color', '#ffffff' );
+    $read_more_hover_bg = get_theme_mod( 'purelyst_read_more_hover_bg_color', '#1a2a29' );
 
     $css = '';
 
@@ -430,9 +480,9 @@ function purelyst_customizer_css() {
     }
 
     // Read More button colors
-    if ( '#2b403e' !== $read_more_color || '#1a2a29' !== $read_more_hover ) {
-        $css .= '.read-more-btn { background-color: ' . esc_attr( $read_more_color ) . '; }';
-        $css .= '.read-more-btn:hover { background-color: ' . esc_attr( $read_more_hover ) . '; }';
+    if ( '#2b403e' !== $read_more_bg || '#ffffff' !== $read_more_text || '#1a2a29' !== $read_more_hover_bg ) {
+        $css .= '.read-more-btn { background-color: ' . esc_attr( $read_more_bg ) . '; color: ' . esc_attr( $read_more_text ) . '; }';
+        $css .= '.read-more-btn:hover { background-color: ' . esc_attr( $read_more_hover_bg ) . '; }';
     }
 
     if ( ! empty( $css ) ) {

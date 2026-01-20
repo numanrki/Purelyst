@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.14
+Version: 1.0.16
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -3616,6 +3616,73 @@ input[type="search"].search-bar-input {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     max-width: none;
+}
+
+/* ==========================================================================
+   Scroll to Top Button
+   ========================================================================== */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(1rem);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+    z-index: 999;
+}
+
+.scroll-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    background-color: #1a2a29;
+    transform: translateY(-2px);
+}
+
+.scroll-to-top:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.scroll-to-top .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.dark .scroll-to-top {
+    background-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .scroll-to-top:hover {
+    background-color: #1a2a29;
+}
+
+@media (max-width: 767px) {
+    .scroll-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+    
+    .scroll-to-top .material-symbols-outlined {
+        font-size: 1.125rem;
+    }
 }
 
 

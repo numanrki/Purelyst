@@ -49,9 +49,16 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <span class="meta-separator">•</span>
                 <span class="meta-reading-time"><?php echo esc_html( purelyst_reading_time() ); ?></span>
             </div>
-            <a href="<?php the_permalink(); ?>" class="read-more-btn">
-                <?php echo esc_html( get_theme_mod( 'purelyst_read_more_text', __( 'Read More', 'purelyst' ) ) ); ?>
-            </a>
+            <?php 
+            $purelyst_settings = get_option( 'purelyst_settings', array() );
+            $read_more_enable = isset( $purelyst_settings['read_more_enable'] ) ? $purelyst_settings['read_more_enable'] : true;
+            $read_more_text = isset( $purelyst_settings['read_more_text'] ) && ! empty( $purelyst_settings['read_more_text'] ) ? $purelyst_settings['read_more_text'] : __( 'Read More', 'purelyst' );
+            
+            if ( $read_more_enable ) : ?>
+                <a href="<?php the_permalink(); ?>" class="read-more-btn">
+                    <?php echo esc_html( $read_more_text ); ?>
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 </article>

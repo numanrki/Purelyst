@@ -322,6 +322,42 @@
     };
 
     /**
+     * Scroll to Top Button
+     */
+    const initScrollToTop = () => {
+        const scrollBtn = document.getElementById('scroll-to-top');
+        if (!scrollBtn) return;
+
+        let ticking = false;
+
+        const updateScrollButton = () => {
+            if (window.scrollY > 300) {
+                scrollBtn.classList.add('is-visible');
+            } else {
+                scrollBtn.classList.remove('is-visible');
+            }
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateScrollButton);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Initial check
+        updateScrollButton();
+    };
+
+    /**
      * Copy to Clipboard Helper
      */
     const copyToClipboard = (text) => {
@@ -365,6 +401,7 @@
         initNewsletterForm();
         initReadingProgress();
         initShareButton();
+        initScrollToTop();
     };
 
     // Run on DOM ready
