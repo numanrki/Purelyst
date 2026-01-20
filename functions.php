@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define theme constants
  */
-define( 'PURELYST_VERSION', '1.0.23' );
+define( 'PURELYST_VERSION', '1.0.24' );
 define( 'PURELYST_DIR', get_template_directory() );
 define( 'PURELYST_URI', get_template_directory_uri() );
 
@@ -127,6 +127,8 @@ function purelyst_critical_css() {
     html{-webkit-text-size-adjust:100%}
     body{margin:0;padding:0;font-family:var(--font-family);font-size:16px;line-height:1.5;color:var(--color-text-primary);background-color:var(--color-background-light);-webkit-font-smoothing:antialiased}
     a{color:inherit;text-decoration:none}
+    a:hover,a:focus{text-decoration:none}
+    button,.btn-primary,.btn-subscribe{text-decoration:none}
     img{max-width:100%;height:auto;display:block}
     .site-header{position:sticky;top:0;z-index:50;width:100%;border-bottom:1px solid var(--color-border-light);background-color:rgba(249,250,251,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;max-width:var(--max-width);margin:0 auto}
@@ -138,7 +140,7 @@ function purelyst_critical_css() {
     @media(min-width:768px){.main-navigation{display:flex;align-items:center}.custom-logo-link img,.custom-logo{max-height:48px!important;max-width:200px!important}}
     .nav-list{display:flex;align-items:center;gap:2rem;list-style:none;margin:0;padding:0}
     .nav-list li{list-style:none;margin:0;padding:0}
-    .nav-link{font-size:.875rem;font-weight:600;color:var(--color-text-secondary)}
+    .nav-link{font-size:.875rem;font-weight:600;color:var(--color-text-secondary);text-decoration:none}
     .header-actions{display:flex;align-items:center;gap:1rem}
     .btn-subscribe{display:none;padding:.625rem 1.25rem;border-radius:var(--radius-full);background-color:var(--color-primary);color:#fff;font-size:.875rem;font-weight:600}
     @media(min-width:768px){.btn-subscribe{display:inline-flex}}
