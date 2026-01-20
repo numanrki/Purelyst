@@ -8,36 +8,91 @@
     'use strict';
 
     /**
-     * Mobile Menu Toggle
+     * Mobile Menu Toggle - Off Canvas
      */
     const initMobileMenu = () => {
         const menuToggle = document.querySelector('[data-menu-toggle]');
+        const menuClose = document.querySelector('[data-menu-close]');
         const mobileMenu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('mobile-menu-overlay');
 
         if (!menuToggle || !mobileMenu) return;
 
-        menuToggle.addEventListener('click', () => {
-            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', !isExpanded);
-            mobileMenu.classList.toggle('is-open');
+        const openMenu = () => {
+            mobileMenu.classList.add('is-open');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('mobile-menu-open');
+            
+            if (overlay) {
+                overlay.classList.add('is-visible');
+                overlay.setAttribute('aria-hidden', 'false');
+            }
 
-            // Update icon
+            // Update hamburger icon
             const icon = menuToggle.querySelector('.material-symbols-outlined');
             if (icon) {
-                icon.textContent = isExpanded ? 'menu' : 'close';
+                icon.textContent = 'close';
+            }
+
+            // Focus the close button for accessibility
+            if (menuClose) {
+                setTimeout(() => menuClose.focus(), 100);
+            }
+        };
+
+        const closeMenu = () => {
+            mobileMenu.classList.remove('is-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('mobile-menu-open');
+            
+            if (overlay) {
+                overlay.classList.remove('is-visible');
+                overlay.setAttribute('aria-hidden', 'true');
+            }
+
+            // Restore hamburger icon
+            const icon = menuToggle.querySelector('.material-symbols-outlined');
+            if (icon) {
+                icon.textContent = 'menu';
+            }
+
+            // Return focus to toggle button
+            menuToggle.focus();
+        };
+
+        // Toggle button click
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+                closeMenu();
+            } else {
+                openMenu();
             }
         });
+
+        // Close button click
+        if (menuClose) {
+            menuClose.addEventListener('click', closeMenu);
+        }
+
+        // Overlay click to close
+        if (overlay) {
+            overlay.addEventListener('click', closeMenu);
+        }
 
         // Close menu on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) {
-                menuToggle.setAttribute('aria-expanded', 'false');
-                mobileMenu.classList.remove('is-open');
-                const icon = menuToggle.querySelector('.material-symbols-outlined');
-                if (icon) {
-                    icon.textContent = 'menu';
-                }
+                closeMenu();
             }
+        });
+
+        // Close menu when clicking a nav link
+        const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link, .mobile-nav-list a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
         });
     };
 

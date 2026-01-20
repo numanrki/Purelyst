@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.24
+Version: 1.0.25
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -518,36 +518,135 @@ input[type="search"].search-bar-input {
     color: #ffffff;
 }
 
-/* Mobile Navigation */
-.mobile-navigation {
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.is-visible {
+    display: block;
+    opacity: 1;
+}
+
+/* Mobile Navigation - Off Canvas */
+.mobile-navigation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
     background-color: var(--color-surface-light);
-    border-bottom: 1px solid var(--color-border-light);
-    padding: 1rem 1.5rem;
+    z-index: 999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .mobile-navigation.is-open {
-    display: block;
+    transform: translateX(0);
 }
 
 .dark .mobile-navigation {
     background-color: var(--color-surface-dark);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Navigation Header */
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.dark .mobile-nav-header {
     border-color: var(--color-border-dark);
+}
+
+.mobile-nav-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.dark .mobile-nav-title {
+    color: #ffffff;
+}
+
+.mobile-menu-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobile-menu-close:hover,
+.mobile-menu-close:focus {
+    background-color: var(--color-border-light);
+    color: var(--color-text-primary);
+}
+
+.dark .mobile-menu-close {
+    color: #a0aeb0;
+}
+
+.dark .mobile-menu-close:hover,
+.dark .mobile-menu-close:focus {
+    background-color: var(--color-border-dark);
+    color: #ffffff;
+}
+
+/* Mobile Navigation List */
+.mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 1rem 0;
+    flex: 1;
+}
+
+.mobile-nav-list li {
+    margin: 0;
 }
 
 .mobile-nav-link {
     display: block;
-    padding: 0.75rem 0;
+    padding: 0.875rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     color: var(--color-text-secondary);
     border-bottom: 1px solid var(--color-border-light);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.mobile-nav-link:hover,
+.mobile-nav-link:focus {
+    background-color: rgba(43, 64, 62, 0.05);
+    color: var(--color-primary);
+}
+
+.mobile-nav-list li:last-child .mobile-nav-link,
 .mobile-nav-link:last-child {
     border-bottom: none;
 }
@@ -555,6 +654,17 @@ input[type="search"].search-bar-input {
 .dark .mobile-nav-link {
     color: #a0aeb0;
     border-color: var(--color-border-dark);
+}
+
+.dark .mobile-nav-link:hover,
+.dark .mobile-nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--color-accent);
+}
+
+/* Body scroll lock when menu is open */
+body.mobile-menu-open {
+    overflow: hidden;
 }
 
 /* ==========================================================================

@@ -176,39 +176,53 @@ function purelyst_primary_navigation() {
  * Display mobile navigation
  */
 function purelyst_mobile_navigation() {
-    if ( has_nav_menu( 'primary' ) ) {
-        wp_nav_menu( array(
-            'theme_location' => 'primary',
-            'menu_class'     => 'mobile-nav-list',
-            'container'      => 'nav',
-            'container_class' => 'mobile-navigation',
-            'container_id'   => 'mobile-menu',
-            'depth'          => 1,
-            'link_before'    => '',
-            'link_after'     => '',
-        ) );
-    } else {
-        ?>
-        <nav class="mobile-navigation" id="mobile-menu">
-            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mobile-nav-link"><?php esc_html_e( 'Home', 'purelyst' ); ?></a>
-            <?php
-            $categories = get_categories( array(
-                'orderby' => 'count',
-                'order'   => 'DESC',
-                'number'  => 3,
-            ) );
-            
-            foreach ( $categories as $category ) {
-                printf(
-                    '<a href="%s" class="mobile-nav-link">%s</a>',
-                    esc_url( get_category_link( $category->term_id ) ),
-                    esc_html( $category->name )
-                );
-            }
-            ?>
-        </nav>
+    ?>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true"></div>
+    
+    <!-- Mobile Navigation Off-Canvas -->
+    <nav class="mobile-navigation" id="mobile-menu" aria-label="<?php esc_attr_e( 'Mobile Navigation', 'purelyst' ); ?>">
+        <div class="mobile-nav-header">
+            <span class="mobile-nav-title"><?php esc_html_e( 'Menu', 'purelyst' ); ?></span>
+            <button class="mobile-menu-close" aria-label="<?php esc_attr_e( 'Close Menu', 'purelyst' ); ?>" data-menu-close>
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            </button>
+        </div>
         <?php
-    }
+        if ( has_nav_menu( 'primary' ) ) {
+            wp_nav_menu( array(
+                'theme_location' => 'primary',
+                'menu_class'     => 'mobile-nav-list',
+                'container'      => false,
+                'depth'          => 1,
+                'link_before'    => '',
+                'link_after'     => '',
+            ) );
+        } else {
+            ?>
+            <ul class="mobile-nav-list">
+                <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mobile-nav-link"><?php esc_html_e( 'Home', 'purelyst' ); ?></a></li>
+                <?php
+                $categories = get_categories( array(
+                    'orderby' => 'count',
+                    'order'   => 'DESC',
+                    'number'  => 3,
+                ) );
+                
+                foreach ( $categories as $category ) {
+                    printf(
+                        '<li><a href="%s" class="mobile-nav-link">%s</a></li>',
+                        esc_url( get_category_link( $category->term_id ) ),
+                        esc_html( $category->name )
+                    );
+                }
+                ?>
+            </ul>
+            <?php
+        }
+        ?>
+    </nav>
+    <?php
 }
 
 /**
