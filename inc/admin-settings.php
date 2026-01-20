@@ -52,6 +52,11 @@ class Purelyst_Admin_Settings {
         'read_more_text_color'  => '#ffffff',
         'read_more_hover_color' => '#1a2a29',
         
+        // Author Box
+        'author_box_enable'     => true,
+        'author_box_image'      => '',
+        'author_box_show_social'=> true,
+        
         // Footer
         'footer_copyright'      => '© {year} Purelyst Theme. All rights reserved.',
         'footer_tagline'        => 'Crafted with intention.',
@@ -253,7 +258,12 @@ class Purelyst_Admin_Settings {
             case 'enable_dark_mode':
             case 'show_footer_social':
             case 'read_more_enable':
+            case 'author_box_enable':
+            case 'author_box_show_social':
                 return (bool) $value;
+
+            case 'author_box_image':
+                return absint( $value );
 
             case 'footer_copyright':
             case 'footer_tagline':
@@ -595,6 +605,63 @@ class Purelyst_Admin_Settings {
                                                         <div class="purelyst-color-field">
                                                             <input type="text" name="read_more_hover_color" class="purelyst-color-picker" value="<?php echo esc_attr( $settings['read_more_hover_color'] ); ?>" data-default-color="#1a2a29">
                                                         </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Author Box Section -->
+                                                <div class="purelyst-config-box">
+                                                    <h3 class="purelyst-config-title"><?php esc_html_e( 'AUTHOR BOX', 'purelyst' ); ?></h3>
+                                                    
+                                                    <!-- Enable Author Box -->
+                                                    <div class="purelyst-toggle-field">
+                                                        <div class="purelyst-toggle-info">
+                                                            <h4 class="purelyst-toggle-title"><?php esc_html_e( 'Enable Author Box', 'purelyst' ); ?></h4>
+                                                            <p class="purelyst-toggle-desc"><?php esc_html_e( 'Show author information box after post content.', 'purelyst' ); ?></p>
+                                                        </div>
+                                                        <label class="purelyst-toggle">
+                                                            <input type="checkbox" name="author_box_enable" value="1" <?php checked( $settings['author_box_enable'], true ); ?>>
+                                                            <span class="purelyst-toggle-slider"></span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="purelyst-divider"></div>
+
+                                                    <!-- Custom Author Image -->
+                                                    <div class="purelyst-field">
+                                                        <label class="purelyst-label"><?php esc_html_e( 'Custom Author Image', 'purelyst' ); ?></label>
+                                                        <p class="purelyst-field-desc"><?php esc_html_e( 'Overrides Gravatar. Leave empty to use Gravatar.', 'purelyst' ); ?></p>
+                                                        <div class="purelyst-media-upload">
+                                                            <input type="hidden" name="author_box_image" id="author_box_image" value="<?php echo esc_attr( $settings['author_box_image'] ); ?>">
+                                                            <div class="purelyst-media-preview" id="author_box_image_preview">
+                                                                <?php if ( ! empty( $settings['author_box_image'] ) ) : ?>
+                                                                    <?php echo wp_get_attachment_image( $settings['author_box_image'], 'thumbnail' ); ?>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                            <div class="purelyst-media-buttons">
+                                                                <button type="button" class="button purelyst-upload-button" data-target="author_box_image">
+                                                                    <span class="material-symbols-outlined">upload</span>
+                                                                    <?php esc_html_e( 'Upload Image', 'purelyst' ); ?>
+                                                                </button>
+                                                                <button type="button" class="button purelyst-remove-button <?php echo empty( $settings['author_box_image'] ) ? 'hidden' : ''; ?>" data-target="author_box_image">
+                                                                    <span class="material-symbols-outlined">delete</span>
+                                                                    <?php esc_html_e( 'Remove', 'purelyst' ); ?>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="purelyst-divider"></div>
+
+                                                    <!-- Show Social Links -->
+                                                    <div class="purelyst-toggle-field">
+                                                        <div class="purelyst-toggle-info">
+                                                            <h4 class="purelyst-toggle-title"><?php esc_html_e( 'Show Social Links', 'purelyst' ); ?></h4>
+                                                            <p class="purelyst-toggle-desc"><?php esc_html_e( 'Display social media links from user profile.', 'purelyst' ); ?></p>
+                                                        </div>
+                                                        <label class="purelyst-toggle">
+                                                            <input type="checkbox" name="author_box_show_social" value="1" <?php checked( $settings['author_box_show_social'], true ); ?>>
+                                                            <span class="purelyst-toggle-slider"></span>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>

@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.18
+Version: 1.0.19
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -2229,6 +2229,162 @@ input[type="search"].search-bar-input {
 .dark .article-tag:hover {
     background-color: var(--color-border-dark);
     color: #ffffff;
+}
+
+/* ==========================================================================
+   Author Box
+   ========================================================================== */
+.author-box {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: var(--spacing-xl);
+    background-color: var(--color-surface-light);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 2rem;
+}
+
+.dark .author-box {
+    background-color: var(--color-surface-dark);
+}
+
+.author-box-avatar-wrapper {
+    flex-shrink: 0;
+}
+
+.author-box-avatar-wrapper img,
+.author-box-avatar-wrapper .author-box-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-accent);
+}
+
+.author-box-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.author-box-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.author-box-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    line-height: 1.3;
+}
+
+.author-box-name a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.author-box-name a:hover {
+    color: var(--color-accent);
+}
+
+.dark .author-box-name a {
+    color: #ffffff;
+}
+
+.dark .author-box-name a:hover {
+    color: var(--color-accent);
+}
+
+.author-box-title {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+}
+
+.dark .author-box-title {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+.author-box-bio {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #6b7280;
+    margin: 0 0 1rem 0;
+}
+
+.dark .author-box-bio {
+    color: #9ca3af;
+}
+
+.author-box-social {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.author-box-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    color: var(--color-primary);
+    transition: all 0.2s ease;
+}
+
+.author-box-social a:hover {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.dark .author-box-social a {
+    background-color: var(--color-background-dark);
+    color: #9ca3af;
+}
+
+.dark .author-box-social a:hover {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+.author-box-social svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Author Box Responsive */
+@media (max-width: 575.98px) {
+    .author-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: var(--spacing-lg);
+    }
+    
+    .author-box-avatar-wrapper img,
+    .author-box-avatar-wrapper .author-box-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .author-box-social {
+        justify-content: center;
+    }
 }
 
 /* ==========================================================================

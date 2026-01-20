@@ -33,28 +33,6 @@ if ( ! defined( 'ABSPATH' ) ) {
             </form>
         </div>
 
-        <!-- About Author Widget -->
-        <?php
-        $author_id = get_the_author_meta( 'ID' );
-        $author_name = get_the_author();
-        $author_bio = get_the_author_meta( 'description' );
-        $author_title = get_theme_mod( 'purelyst_author_title', __( 'Senior Architect', 'purelyst' ) );
-        $author_url = get_author_posts_url( $author_id );
-        ?>
-        <div class="sidebar-widget author-widget-single">
-            <div class="author-avatar-wrapper">
-                <?php echo get_avatar( $author_id, 80, '', $author_name, array( 'class' => 'author-avatar-large' ) ); ?>
-            </div>
-            <h3 class="author-name-large"><?php echo esc_html( $author_name ); ?></h3>
-            <span class="author-title-badge"><?php echo esc_html( $author_title ); ?></span>
-            <?php if ( $author_bio ) : ?>
-                <p class="author-bio-text"><?php echo esc_html( $author_bio ); ?></p>
-            <?php endif; ?>
-            <a href="<?php echo esc_url( $author_url ); ?>" class="author-profile-btn">
-                <?php esc_html_e( 'View Profile', 'purelyst' ); ?>
-            </a>
-        </div>
-
         <!-- Trending Posts Widget -->
         <?php
         $trending_posts = new WP_Query( array(

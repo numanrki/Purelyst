@@ -156,20 +156,21 @@ function purelyst_customize_register( $wp_customize ) {
 
     $wp_customize->add_control( 'purelyst_author_name', array(
         'label'       => __( 'Author Name', 'purelyst' ),
-        'description' => __( 'Display name for the sidebar author widget.', 'purelyst' ),
+        'description' => __( 'Display name for the author box.', 'purelyst' ),
         'section'     => 'purelyst_sidebar_section',
         'type'        => 'text',
     ) );
 
     $wp_customize->add_setting( 'purelyst_author_title', array(
-        'default'           => __( 'Editor in Chief', 'purelyst' ),
+        'default'           => __( 'Writer', 'purelyst' ),
         'sanitize_callback' => 'sanitize_text_field',
     ) );
 
     $wp_customize->add_control( 'purelyst_author_title', array(
-        'label'   => __( 'Author Title', 'purelyst' ),
-        'section' => 'purelyst_sidebar_section',
-        'type'    => 'text',
+        'label'       => __( 'Author Title', 'purelyst' ),
+        'description' => __( 'Job title badge displayed in the author box.', 'purelyst' ),
+        'section'     => 'purelyst_sidebar_section',
+        'type'        => 'text',
     ) );
 
     $wp_customize->add_setting( 'purelyst_author_bio', array(
