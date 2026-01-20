@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define theme constants
  */
-define( 'PURELYST_VERSION', '1.0.22' );
+define( 'PURELYST_VERSION', '1.0.23' );
 define( 'PURELYST_DIR', get_template_directory() );
 define( 'PURELYST_URI', get_template_directory_uri() );
 
@@ -196,12 +196,13 @@ function purelyst_scripts() {
     );
 
     // Enqueue Material Symbols with display=swap
+    // Enqueue Material Symbols icon font
+    // Note: Not deferred as icons are visible above-the-fold
     wp_enqueue_style(
         'purelyst-icons',
         'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap',
         array(),
-        null,
-        'print' // Load as print initially, swap to all via JS for non-critical icons
+        null
     );
 
     // Enqueue main stylesheet
@@ -232,17 +233,12 @@ function purelyst_scripts() {
 add_action( 'wp_enqueue_scripts', 'purelyst_scripts' );
 
 /**
- * Make icon font non-render-blocking by loading as print then swapping to all
- * Note: Main stylesheet is NOT made async as it hurts Speed Index
+ * Style loader tag modifications
+ * Note: Icon font loads normally (not async) as icons are above-the-fold
  */
 function purelyst_async_styles( $tag, $handle, $src ) {
-    // Only make icon font async (it's truly non-critical)
-    if ( 'purelyst-icons' === $handle ) {
-        $tag = str_replace( "media='print'", "media='print' onload=\"this.media='all'\"", $tag );
-        $tag .= '<noscript><link rel="stylesheet" href="' . esc_url( $src ) . '"></noscript>';
-        return $tag;
-    }
-    
+    // Currently no async stylesheet loading
+    // Icon font loads normally to ensure immediate rendering
     return $tag;
 }
 add_filter( 'style_loader_tag', 'purelyst_async_styles', 10, 3 );
