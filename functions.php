@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define theme constants
  */
-define( 'PURELYST_VERSION', '1.0.19' );
+define( 'PURELYST_VERSION', '1.0.20' );
 define( 'PURELYST_DIR', get_template_directory() );
 define( 'PURELYST_URI', get_template_directory_uri() );
 
@@ -115,13 +115,78 @@ function purelyst_content_width() {
 add_action( 'after_setup_theme', 'purelyst_content_width', 0 );
 
 /**
+ * Output critical CSS inline for faster FCP/LCP
+ * This CSS is required for above-the-fold content rendering
+ */
+function purelyst_critical_css() {
+    ?>
+    <style id="purelyst-critical-css">
+    /* Critical CSS - Above the fold styles */
+    :root{--color-primary:#2b403e;--color-accent:#B5A795;--color-background-light:#f9fafb;--color-surface-light:#fff;--color-text-primary:#131616;--color-text-secondary:#6a7c7a;--color-border-light:#ecefee;--font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--spacing-md:1rem;--spacing-lg:1.5rem;--spacing-xl:2rem;--radius-md:0.5rem;--radius-lg:0.75rem;--radius-full:9999px;--shadow-soft:0 4px 20px rgba(0,0,0,.05);--max-width:1280px;--header-height:72px}
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;padding:0;font-family:var(--font-family);font-size:16px;line-height:1.5;color:var(--color-text-primary);background-color:var(--color-background-light);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+    .site-header{position:sticky;top:0;z-index:50;width:100%;border-bottom:1px solid var(--color-border-light);background-color:rgba(249,250,251,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;max-width:var(--max-width);margin:0 auto}
+    .site-logo{display:flex;align-items:center;gap:.75rem}
+    .custom-logo-link{display:flex;align-items:center}
+    .custom-logo-link img,.custom-logo{max-height:40px!important;width:auto!important;height:auto!important;max-width:180px!important;object-fit:contain}
+    .logo-text{font-size:1.25rem;font-weight:800;color:var(--color-primary);letter-spacing:-.025em}
+    .main-navigation{display:none}
+    @media(min-width:768px){.main-navigation{display:flex;align-items:center}.custom-logo-link img,.custom-logo{max-height:48px!important;max-width:200px!important}}
+    .nav-list{display:flex;align-items:center;gap:2rem;list-style:none;margin:0;padding:0}
+    .nav-list li{list-style:none;margin:0;padding:0}
+    .nav-link{font-size:.875rem;font-weight:600;color:var(--color-text-secondary)}
+    .header-actions{display:flex;align-items:center;gap:1rem}
+    .btn-subscribe{display:none;padding:.625rem 1.25rem;border-radius:var(--radius-full);background-color:var(--color-primary);color:#fff;font-size:.875rem;font-weight:600}
+    @media(min-width:768px){.btn-subscribe{display:inline-flex}}
+    .mobile-menu-toggle{display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border:none;background:0 0;color:var(--color-text-primary);cursor:pointer}
+    @media(min-width:768px){.mobile-menu-toggle{display:none}}
+    .hero-section{position:relative;width:100%;padding:4rem 1.5rem 5rem;background-color:var(--color-background-light);overflow:hidden}
+    .hero-inner{max-width:var(--max-width);margin:0 auto}
+    .hero-content{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+    @media(min-width:1024px){.hero-content{grid-template-columns:1fr 1fr;gap:4rem}}
+    .hero-text{display:flex;flex-direction:column;gap:1.5rem;order:2}
+    @media(min-width:1024px){.hero-text{order:1;padding-right:2rem}}
+    .featured-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem 1rem;border-radius:var(--radius-full);background-color:rgba(181,167,149,.15);color:var(--color-accent);font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;width:fit-content}
+    .hero-title{font-size:2.5rem;font-weight:800;color:var(--color-text-primary);line-height:1.1;letter-spacing:-.03em;margin:0}
+    .hero-title a{color:inherit}
+    @media(min-width:768px){.hero-title{font-size:3.5rem}}
+    @media(min-width:1024px){.hero-title{font-size:4rem}}
+    .hero-excerpt{font-size:1.125rem;color:var(--color-text-secondary);line-height:1.8;max-width:32rem;margin:0}
+    @media(min-width:768px){.hero-excerpt{font-size:1.25rem}}
+    .hero-image{order:1}
+    @media(min-width:1024px){.hero-image{order:2}}
+    .hero-image-wrapper{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3}
+    .hero-image-inner{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 1.75rem;border:none;border-radius:var(--radius-lg);background-color:var(--color-primary);color:#fff;font-size:.9375rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(43,64,62,.25)}
+    .search-toggle{display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border:none;border-radius:var(--radius-full);background:0 0;color:var(--color-text-primary);cursor:pointer;position:relative}
+    .search-toggle .close-icon{display:none}
+    /* Font fallback to prevent FOIT */
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+    .fonts-loaded body{font-family:var(--font-family)}
+    </style>
+    <?php
+}
+
+/**
+ * Mark fonts as loaded for CSS font-display optimization
+ */
+function purelyst_font_loading_script() {
+    ?>
+    <script>
+    if("fonts"in document){document.fonts.ready.then(function(){document.documentElement.classList.add("fonts-loaded")})}else{document.documentElement.classList.add("fonts-loaded")}
+    </script>
+    <?php
+}
+add_action( 'wp_head', 'purelyst_font_loading_script', 3 );
+
+/**
  * Enqueue scripts and styles
  */
 function purelyst_scripts() {
-    // Preconnect to Google Fonts
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
-    
     // Enqueue Google Fonts with display=swap for better CLS
     wp_enqueue_style(
         'purelyst-fonts',
@@ -130,12 +195,13 @@ function purelyst_scripts() {
         null
     );
 
-    // Enqueue Material Symbols
+    // Enqueue Material Symbols with display=swap
     wp_enqueue_style(
         'purelyst-icons',
-        'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap',
+        'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap',
         array(),
-        null
+        null,
+        'print' // Load as print initially, swap to all via JS for non-critical icons
     );
 
     // Enqueue main stylesheet
@@ -166,28 +232,78 @@ function purelyst_scripts() {
 add_action( 'wp_enqueue_scripts', 'purelyst_scripts' );
 
 /**
- * Add preload for critical fonts
+ * Make icon font non-render-blocking by loading as print then swapping to all
  */
-function purelyst_preload_fonts() {
-    ?>
-    <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin>
-    <?php
+function purelyst_async_icon_styles( $tag, $handle, $src ) {
+    if ( 'purelyst-icons' === $handle ) {
+        // Load as print, then swap to all media when loaded
+        $tag = str_replace( "media='print'", "media='print' onload=\"this.media='all'\"", $tag );
+        // Add noscript fallback
+        $tag .= '<noscript><link rel="stylesheet" href="' . esc_url( $src ) . '"></noscript>';
+    }
+    return $tag;
 }
-add_action( 'wp_head', 'purelyst_preload_fonts', 1 );
+add_filter( 'style_loader_tag', 'purelyst_async_icon_styles', 10, 3 );
 
 /**
- * Add resource hints for performance
+ * Add critical preconnects and preloads - runs very early in head
+ */
+function purelyst_critical_preloads() {
+    // Preconnect to Google Fonts origins (critical for FCP/LCP)
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    
+    // Preload critical Manrope font file (Latin subset, most common)
+    echo '<link rel="preload" href="https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin>' . "\n";
+}
+add_action( 'wp_head', 'purelyst_critical_preloads', 1 );
+
+/**
+ * Preload LCP image on front page
+ */
+function purelyst_preload_lcp_image() {
+    if ( ! is_front_page() ) {
+        return;
+    }
+    
+    // Get hero post
+    $hero_post_id = get_theme_mod( 'purelyst_hero_post', '' );
+    
+    if ( ! $hero_post_id ) {
+        $sticky = get_option( 'sticky_posts' );
+        if ( ! empty( $sticky ) ) {
+            $hero_post_id = $sticky[0];
+        } else {
+            $recent = get_posts( array( 'posts_per_page' => 1, 'fields' => 'ids' ) );
+            $hero_post_id = ! empty( $recent ) ? $recent[0] : 0;
+        }
+    }
+    
+    if ( $hero_post_id && has_post_thumbnail( $hero_post_id ) ) {
+        $image_id = get_post_thumbnail_id( $hero_post_id );
+        $image_src = wp_get_attachment_image_src( $image_id, 'purelyst-hero' );
+        
+        if ( $image_src ) {
+            printf(
+                '<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n",
+                esc_url( $image_src[0] )
+            );
+        }
+    }
+}
+add_action( 'wp_head', 'purelyst_preload_lcp_image', 2 );
+
+/**
+ * Add resource hints for performance (backup/additional hints)
  */
 function purelyst_resource_hints( $hints, $relation_type ) {
-    if ( 'dns-prefetch' === $relation_type ) {
-        $hints[] = '//fonts.googleapis.com';
-        $hints[] = '//fonts.gstatic.com';
-    }
-
     if ( 'preconnect' === $relation_type ) {
         $hints[] = array(
-            'href' => 'https://fonts.gstatic.com',
-            'crossorigin',
+            'href'        => 'https://fonts.googleapis.com',
+        );
+        $hints[] = array(
+            'href'        => 'https://fonts.gstatic.com',
+            'crossorigin' => 'anonymous',
         );
     }
 

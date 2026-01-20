@@ -15,12 +15,30 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php if ( has_post_thumbnail() ) : ?>
             <?php
             $thumbnail_id = get_post_thumbnail_id();
-            $image_url = get_the_post_thumbnail_url( get_the_ID(), 'purelyst-card' );
+            $image_src = wp_get_attachment_image_src( $thumbnail_id, 'purelyst-card' );
+            $image_srcset = wp_get_attachment_image_srcset( $thumbnail_id, 'purelyst-card' );
+            $image_alt = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+            
+            if ( ! $image_alt ) {
+                $image_alt = get_the_title();
+            }
             ?>
-            <div class="article-thumbnail-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
+            <img 
+                src="<?php echo esc_url( $image_src[0] ); ?>"
+                <?php if ( $image_srcset ) : ?>
+                srcset="<?php echo esc_attr( $image_srcset ); ?>"
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                <?php endif; ?>
+                width="<?php echo esc_attr( $image_src[1] ); ?>"
+                height="<?php echo esc_attr( $image_src[2] ); ?>"
+                alt="<?php echo esc_attr( $image_alt ); ?>"
+                class="article-thumbnail-inner"
+                loading="lazy"
+                decoding="async"
+            >
         <?php else : ?>
             <div class="article-thumbnail-inner article-thumbnail-placeholder">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ); ?>" alt="" class="placeholder-svg">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/placeholder.svg' ); ?>" alt="" class="placeholder-svg" loading="lazy">
             </div>
         <?php endif; ?>
     </a>

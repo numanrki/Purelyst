@@ -77,9 +77,30 @@ if ( $hero_post_id ) {
                         <?php if ( has_post_thumbnail() ) : ?>
                             <div class="hero-image-wrapper">
                                 <?php 
-                                $image_url = get_the_post_thumbnail_url( get_the_ID(), 'purelyst-hero' );
+                                // Get image data for LCP optimization
+                                $image_id = get_post_thumbnail_id();
+                                $image_src = wp_get_attachment_image_src( $image_id, 'purelyst-hero' );
+                                $image_srcset = wp_get_attachment_image_srcset( $image_id, 'purelyst-hero' );
+                                $image_sizes = '(min-width: 1024px) 50vw, 100vw';
+                                $image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+                                
+                                if ( ! $image_alt ) {
+                                    $image_alt = get_the_title();
+                                }
                                 ?>
-                                <div class="hero-image-inner" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
+                                <img 
+                                    src="<?php echo esc_url( $image_src[0] ); ?>"
+                                    <?php if ( $image_srcset ) : ?>
+                                    srcset="<?php echo esc_attr( $image_srcset ); ?>"
+                                    sizes="<?php echo esc_attr( $image_sizes ); ?>"
+                                    <?php endif; ?>
+                                    width="<?php echo esc_attr( $image_src[1] ); ?>"
+                                    height="<?php echo esc_attr( $image_src[2] ); ?>"
+                                    alt="<?php echo esc_attr( $image_alt ); ?>"
+                                    class="hero-image-inner"
+                                    fetchpriority="high"
+                                    decoding="async"
+                                >
                             </div>
                         <?php else : ?>
                             <div class="hero-image-placeholder">

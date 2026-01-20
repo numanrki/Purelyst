@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.19
+Version: 1.0.20
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -738,13 +738,19 @@ input[type="search"].search-bar-input {
 }
 
 .hero-image-inner {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.7s ease;
+}
+
+/* Maintain backward compatibility for background-image usage */
+.hero-image-inner[style*="background-image"] {
+    position: absolute;
+    inset: 0;
     background-size: cover;
     background-position: center;
-    transition: transform 0.7s ease;
 }
 
 .hero-image-wrapper:hover .hero-image-inner {
@@ -881,10 +887,16 @@ input[type="search"].search-bar-input {
 .article-thumbnail-inner {
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
+    object-position: center;
     filter: saturate(0.85);
     transition: filter 0.3s ease, transform 0.5s ease;
+}
+
+/* Backward compatibility for background-image usage */
+.article-thumbnail-inner[style*="background-image"] {
+    background-size: cover;
+    background-position: center;
 }
 
 .article-card:hover .article-thumbnail-inner {
