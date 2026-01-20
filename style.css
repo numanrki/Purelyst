@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.9
+Version: 1.0.10
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -2363,6 +2363,7 @@ input[type="search"].search-bar-input {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .comment-form-author label,
@@ -2381,8 +2382,15 @@ input[type="search"].search-bar-input {
 
 .comment-form-author input,
 .comment-form-email input,
-.comment-form-url input {
+.comment-form-url input,
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form input[type="url"],
+#author,
+#email,
+#url {
     width: 100%;
+    max-width: 400px;
     padding: 0.875rem 1rem;
     font-family: var(--font-family);
     font-size: 1rem;
@@ -2391,11 +2399,20 @@ input[type="search"].search-bar-input {
     border: 2px solid var(--color-border-light);
     border-radius: var(--radius-lg);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .comment-form-author input:focus,
 .comment-form-email input:focus,
-.comment-form-url input:focus {
+.comment-form-url input:focus,
+.comment-form input[type="text"]:focus,
+.comment-form input[type="email"]:focus,
+.comment-form input[type="url"]:focus,
+#author:focus,
+#email:focus,
+#url:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(43, 64, 62, 0.1);
@@ -2403,15 +2420,27 @@ input[type="search"].search-bar-input {
 
 .dark .comment-form-author input,
 .dark .comment-form-email input,
-.dark .comment-form-url input {
-    background-color: var(--color-background-dark);
-    border-color: var(--color-border-dark);
+.dark .comment-form-url input,
+.dark .comment-form input[type="text"],
+.dark .comment-form input[type="email"],
+.dark .comment-form input[type="url"],
+.dark #author,
+.dark #email,
+.dark #url {
+    background-color: #1f2937;
+    border-color: #374151;
     color: #ffffff;
 }
 
 .dark .comment-form-author input:focus,
 .dark .comment-form-email input:focus,
-.dark .comment-form-url input:focus {
+.dark .comment-form-url input:focus,
+.dark .comment-form input[type="text"]:focus,
+.dark .comment-form input[type="email"]:focus,
+.dark .comment-form input[type="url"]:focus,
+.dark #author:focus,
+.dark #email:focus,
+.dark #url:focus {
     border-color: var(--color-accent);
     box-shadow: 0 0 0 4px rgba(181, 167, 149, 0.1);
 }
@@ -2423,17 +2452,27 @@ input[type="search"].search-bar-input {
     gap: 0.75rem;
     font-size: 0.875rem;
     color: var(--color-text-secondary);
+    margin: 1rem 0;
+    padding: 0.75rem 0;
 }
 
-.comment-form-cookies-consent input[type="checkbox"] {
-    width: 1.125rem;
-    height: 1.125rem;
+.comment-form-cookies-consent input[type="checkbox"],
+#wp-comment-cookies-consent {
+    width: 1.25rem;
+    height: 1.25rem;
     accent-color: var(--color-primary);
     cursor: pointer;
+    flex-shrink: 0;
+    border-radius: 4px;
 }
 
 .dark .comment-form-cookies-consent {
     color: #a0aeb0;
+}
+
+.dark .comment-form-cookies-consent input[type="checkbox"],
+.dark #wp-comment-cookies-consent {
+    accent-color: var(--color-accent);
 }
 
 .comment-form textarea {
@@ -2468,10 +2507,15 @@ input[type="search"].search-bar-input {
 }
 
 .comment-form .form-submit {
-    margin: 0;
+    margin: 1.5rem 0 0 0;
+    padding: 0;
+    background: transparent !important;
+    border: none;
 }
 
-.comment-form .submit {
+.comment-form .submit,
+.comment-form input[type="submit"],
+#submit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2487,14 +2531,24 @@ input[type="search"].search-bar-input {
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.comment-form .submit:hover {
+.comment-form .submit:hover,
+.comment-form input[type="submit"]:hover,
+#submit:hover {
     background-color: rgba(43, 64, 62, 0.9);
     transform: translateY(-1px);
 }
 
-.dark .comment-form .submit {
-    background-color: var(--color-accent);
-    color: var(--color-primary);
+.dark .comment-form .submit,
+.dark .comment-form input[type="submit"],
+.dark #submit {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.dark .comment-form .submit:hover,
+.dark .comment-form input[type="submit"]:hover,
+.dark #submit:hover {
+    background-color: rgba(43, 64, 62, 0.85);
 }
 
 .no-comments {
