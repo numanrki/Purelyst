@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.8
+Version: 1.0.9
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -2354,6 +2354,86 @@ input[type="search"].search-bar-input {
 
 .dark .comment-form-comment label {
     color: #ffffff;
+}
+
+/* Comment Form Fields (Name, Email, Website) */
+.comment-form-author,
+.comment-form-email,
+.comment-form-url {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.comment-form-author label,
+.comment-form-email label,
+.comment-form-url label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.dark .comment-form-author label,
+.dark .comment-form-email label,
+.dark .comment-form-url label {
+    color: #ffffff;
+}
+
+.comment-form-author input,
+.comment-form-email input,
+.comment-form-url input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    background-color: var(--color-background-light);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-form-author input:focus,
+.comment-form-email input:focus,
+.comment-form-url input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(43, 64, 62, 0.1);
+}
+
+.dark .comment-form-author input,
+.dark .comment-form-email input,
+.dark .comment-form-url input {
+    background-color: var(--color-background-dark);
+    border-color: var(--color-border-dark);
+    color: #ffffff;
+}
+
+.dark .comment-form-author input:focus,
+.dark .comment-form-email input:focus,
+.dark .comment-form-url input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(181, 167, 149, 0.1);
+}
+
+/* Cookies Consent Checkbox */
+.comment-form-cookies-consent {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.comment-form-cookies-consent input[type="checkbox"] {
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.dark .comment-form-cookies-consent {
+    color: #a0aeb0;
 }
 
 .comment-form textarea {
