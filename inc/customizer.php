@@ -361,6 +361,41 @@ function purelyst_customize_register( $wp_customize ) {
         'section' => 'purelyst_posts_section',
         'type'    => 'text',
     ) );
+
+    // Read More Button Text
+    $wp_customize->add_setting( 'purelyst_read_more_text', array(
+        'default'           => __( 'Read More', 'purelyst' ),
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'purelyst_read_more_text', array(
+        'label'       => __( 'Read More Button Text', 'purelyst' ),
+        'description' => __( 'Text displayed on archive card buttons.', 'purelyst' ),
+        'section'     => 'purelyst_posts_section',
+        'type'        => 'text',
+    ) );
+
+    // Read More Button Color
+    $wp_customize->add_setting( 'purelyst_read_more_color', array(
+        'default'           => '#2b403e',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_color', array(
+        'label'   => __( 'Read More Button Color', 'purelyst' ),
+        'section' => 'purelyst_posts_section',
+    ) ) );
+
+    // Read More Button Hover Color
+    $wp_customize->add_setting( 'purelyst_read_more_hover_color', array(
+        'default'           => '#1a2a29',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'purelyst_read_more_hover_color', array(
+        'label'   => __( 'Read More Button Hover Color', 'purelyst' ),
+        'section' => 'purelyst_posts_section',
+    ) ) );
 }
 add_action( 'customize_register', 'purelyst_customize_register' );
 
@@ -377,25 +412,32 @@ function purelyst_sanitize_checkbox( $checked ) {
 function purelyst_customizer_css() {
     $primary_color = get_theme_mod( 'purelyst_primary_color', '#2b403e' );
     $accent_color = get_theme_mod( 'purelyst_accent_color', '#B5A795' );
+    $read_more_color = get_theme_mod( 'purelyst_read_more_color', '#2b403e' );
+    $read_more_hover = get_theme_mod( 'purelyst_read_more_hover_color', '#1a2a29' );
 
-    // Only output if colors have been changed from defaults
-    if ( '#2b403e' === $primary_color && '#B5A795' === $accent_color ) {
-        return;
+    $css = '';
+
+    // Root variables
+    if ( '#2b403e' !== $primary_color || '#B5A795' !== $accent_color ) {
+        $css .= ':root {';
+        if ( '#2b403e' !== $primary_color ) {
+            $css .= '--color-primary: ' . esc_attr( $primary_color ) . ';';
+        }
+        if ( '#B5A795' !== $accent_color ) {
+            $css .= '--color-accent: ' . esc_attr( $accent_color ) . ';';
+        }
+        $css .= '}';
     }
 
-    $css = ':root {';
-    
-    if ( '#2b403e' !== $primary_color ) {
-        $css .= '--color-primary: ' . esc_attr( $primary_color ) . ';';
+    // Read More button colors
+    if ( '#2b403e' !== $read_more_color || '#1a2a29' !== $read_more_hover ) {
+        $css .= '.read-more-btn { background-color: ' . esc_attr( $read_more_color ) . '; }';
+        $css .= '.read-more-btn:hover { background-color: ' . esc_attr( $read_more_hover ) . '; }';
     }
-    
-    if ( '#B5A795' !== $accent_color ) {
-        $css .= '--color-accent: ' . esc_attr( $accent_color ) . ';';
-    }
-    
-    $css .= '}';
 
-    wp_add_inline_style( 'purelyst-style', $css );
+    if ( ! empty( $css ) ) {
+        wp_add_inline_style( 'purelyst-style', $css );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'purelyst_customizer_css', 20 );
 

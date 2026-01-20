@@ -43,10 +43,15 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php echo esc_html( wp_trim_words( get_the_excerpt(), 20 ) ); ?>
         </p>
 
-        <div class="article-meta">
-            <span class="meta-date"><?php echo esc_html( get_the_date( 'M j, Y' ) ); ?></span>
-            <span class="meta-separator">•</span>
-            <span class="meta-reading-time"><?php echo esc_html( purelyst_reading_time() ); ?></span>
+        <div class="article-footer">
+            <div class="article-meta">
+                <span class="meta-date"><?php echo esc_html( get_the_date( 'M j, Y' ) ); ?></span>
+                <span class="meta-separator">•</span>
+                <span class="meta-reading-time"><?php echo esc_html( purelyst_reading_time() ); ?></span>
+            </div>
+            <a href="<?php the_permalink(); ?>" class="read-more-btn">
+                <?php echo esc_html( get_theme_mod( 'purelyst_read_more_text', __( 'Read More', 'purelyst' ) ) ); ?>
+            </a>
         </div>
     </div>
 </article>
