@@ -14,13 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Preconnect to critical origins - must be very first -->
+    <!-- Preconnect for Material Symbols icons only (fonts are self-hosted) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <!-- Preload critical font -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Preload critical self-hosted font -->
+    <link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/manrope-latin.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <?php purelyst_critical_css(); ?>
     <?php wp_head(); ?>

@@ -99,7 +99,6 @@ if ( $hero_post_id ) {
                                     alt="<?php echo esc_attr( $image_alt ); ?>"
                                     class="hero-image-inner"
                                     fetchpriority="high"
-                                    decoding="async"
                                 >
                             </div>
                         <?php else : ?>
@@ -111,7 +110,6 @@ if ( $hero_post_id ) {
                                     width="800"
                                     height="600"
                                     fetchpriority="high"
-                                    decoding="async"
                                 >
                             </div>
                         <?php endif; ?>

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define theme constants
  */
-define( 'PURELYST_VERSION', '1.0.26' );
+define( 'PURELYST_VERSION', '1.0.27' );
 define( 'PURELYST_DIR', get_template_directory() );
 define( 'PURELYST_URI', get_template_directory_uri() );
 
@@ -117,10 +117,14 @@ add_action( 'after_setup_theme', 'purelyst_content_width', 0 );
 /**
  * Output critical CSS inline for faster FCP/LCP
  * This CSS is required for above-the-fold content rendering
+ * Includes self-hosted font-face for immediate font availability
  */
 function purelyst_critical_css() {
+    $font_url = esc_url( get_template_directory_uri() . '/assets/fonts/manrope-latin.woff2' );
     ?>
     <style id="purelyst-critical-css">
+    /* Critical font-face - self-hosted for faster loading */
+    @font-face{font-family:'Manrope';font-style:normal;font-weight:400 800;font-display:swap;src:url('<?php echo $font_url; ?>') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
     /* Critical CSS - Above the fold styles */
     :root{--color-primary:#2b403e;--color-accent:#B5A795;--color-background-light:#f9fafb;--color-surface-light:#fff;--color-text-primary:#131616;--color-text-secondary:#6a7c7a;--color-border-light:#ecefee;--font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--spacing-md:1rem;--spacing-lg:1.5rem;--spacing-xl:2rem;--radius-md:0.5rem;--radius-lg:0.75rem;--radius-full:9999px;--shadow-soft:0 4px 20px rgba(0,0,0,.05);--max-width:1280px;--header-height:72px}
     *,*::before,*::after{box-sizing:border-box}
@@ -162,44 +166,29 @@ function purelyst_critical_css() {
     .hero-image{order:1}
     @media(min-width:1024px){.hero-image{order:2}}
     .hero-image-wrapper{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3}
-    .hero-image-inner{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+    .hero-image-inner{width:100%;height:100%;object-fit:cover;object-position:center}
     .btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 1.75rem;border:none;border-radius:var(--radius-lg);background-color:var(--color-primary);color:#fff;font-size:.9375rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(43,64,62,.25)}
     .search-toggle{display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border:none;border-radius:var(--radius-full);background:0 0;color:var(--color-text-primary);cursor:pointer;position:relative}
     .search-toggle .close-icon{display:none}
-    /* Font fallback to prevent FOIT */
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-    .fonts-loaded body{font-family:var(--font-family)}
+    /* Material Symbols fallback - hide text until font loads */
+    .material-symbols-outlined{font-family:'Material Symbols Outlined',sans-serif;font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';-webkit-font-smoothing:antialiased}
     </style>
     <?php
 }
 
 /**
- * Mark fonts as loaded for CSS font-display optimization
- */
-function purelyst_font_loading_script() {
-    ?>
-    <script>
-    if("fonts"in document){document.fonts.ready.then(function(){document.documentElement.classList.add("fonts-loaded")})}else{document.documentElement.classList.add("fonts-loaded")}
-    </script>
-    <?php
-}
-add_action( 'wp_head', 'purelyst_font_loading_script', 3 );
-
-/**
  * Enqueue scripts and styles
  */
 function purelyst_scripts() {
-    // Enqueue Google Fonts with display=swap for better CLS
+    // Self-hosted fonts (eliminates Google Fonts external requests)
     wp_enqueue_style(
         'purelyst-fonts',
-        'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap',
+        PURELYST_URI . '/assets/css/fonts.css',
         array(),
-        null
+        PURELYST_VERSION
     );
 
-    // Enqueue Material Symbols with display=swap
-    // Enqueue Material Symbols icon font
-    // Note: Not deferred as icons are visible above-the-fold
+    // Enqueue Material Symbols icon font (deferred - not critical for FCP)
     wp_enqueue_style(
         'purelyst-icons',
         'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap',
@@ -207,7 +196,7 @@ function purelyst_scripts() {
         null
     );
 
-    // Enqueue main stylesheet
+    // Enqueue main stylesheet (will be deferred via filter)
     wp_enqueue_style(
         'purelyst-style',
         get_stylesheet_uri(),
@@ -235,15 +224,27 @@ function purelyst_scripts() {
 add_action( 'wp_enqueue_scripts', 'purelyst_scripts' );
 
 /**
- * Style loader tag modifications
- * Note: Icon font loads normally (not async) as icons are above-the-fold
+ * Defer non-critical stylesheets for better FCP/LCP
+ * Main stylesheet and icon font are loaded asynchronously
  */
-function purelyst_async_styles( $tag, $handle, $src ) {
-    // Currently no async stylesheet loading
-    // Icon font loads normally to ensure immediate rendering
+function purelyst_defer_stylesheets( $tag, $handle, $src ) {
+    // Stylesheets to defer (load async)
+    $defer_handles = array( 'purelyst-style', 'purelyst-icons' );
+    
+    if ( in_array( $handle, $defer_handles, true ) ) {
+        // Use preload/onload pattern for async CSS loading
+        $tag = sprintf(
+            '<link rel="preload" id="%s-css" href="%s" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n" .
+            '<noscript><link rel="stylesheet" href="%s"></noscript>' . "\n",
+            esc_attr( $handle ),
+            esc_url( $src ),
+            esc_url( $src )
+        );
+    }
+    
     return $tag;
 }
-add_filter( 'style_loader_tag', 'purelyst_async_styles', 10, 3 );
+add_filter( 'style_loader_tag', 'purelyst_defer_stylesheets', 10, 3 );
 
 /**
  * Critical preloads are now in header.php directly for earliest possible loading
@@ -582,21 +583,6 @@ function purelyst_hero_image_priority( $attr, $attachment, $size ) {
     return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'purelyst_hero_image_priority', 11, 3 );
-
-/**
- * Defer non-critical CSS
- */
-function purelyst_defer_styles( $html, $handle, $href, $media ) {
-    $defer_handles = array( 'purelyst-icons' );
-    
-    if ( in_array( $handle, $defer_handles, true ) ) {
-        $html = str_replace( "rel='stylesheet'", "rel='preload' as='style' onload=\"this.onload=null;this.rel='stylesheet'\"", $html );
-        $html .= "<noscript><link rel='stylesheet' href='{$href}' media='{$media}' /></noscript>";
-    }
-    
-    return $html;
-}
-add_filter( 'style_loader_tag', 'purelyst_defer_styles', 10, 4 );
 
 /**
  * Remove unnecessary WordPress default scripts/styles for performance
