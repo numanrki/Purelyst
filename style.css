@@ -4,7 +4,7 @@ Theme URI: https://wordpress.org/themes/purelyst/
 Author: Numan Rasheed
 Author URI: https://profiles.wordpress.org/numanrki/
 Description: A minimalist WordPress theme dedicated to clarity, design, and intentional living. Features a clean, modern aesthetic with focus on content readability and excellent Core Web Vitals performance.
-Version: 1.0.25
+Version: 1.0.26
 Tested up to: 6.7
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -104,6 +104,23 @@ body {
 ::selection {
     background-color: var(--color-primary);
     color: #ffffff;
+}
+
+/* Material Symbols Icons */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Links */
